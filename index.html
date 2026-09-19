@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="Shaurma City" />
 <meta name="format-detection" content="telephone=no" />
-<title>Shaurma City · LIVE 9</title>
+<title>Shaurma City · Build 8</title>
 <style>
 :root{
   --bg:#060a12;--bg2:#09111d;--bg3:#101a2e;--panel:rgba(14,20,34,.82);--panel2:rgba(9,14,24,.93);--text:#f7faff;--muted:#93a2bc;
@@ -70,9 +70,16 @@ button{font:inherit} .app{max-width:980px;margin:0 auto;padding-bottom:calc(92px
 
 @media (max-width:860px){ .hero,.builder-showcase,.summary-visual{grid-template-columns:1fr} .hero-card{min-height:430px} .grid{grid-template-columns:repeat(2,1fr)} .extra-modules{grid-template-columns:repeat(2,1fr)} .arena-stage{grid-template-columns:1fr;gap:10px} .arena-center{min-height:92px;order:-1} .vs-ring{top:36px;left:50%;transform:translate(-50%,-50%)} }
 @media (max-width:560px){ .topbar{margin:0 10px;padding-top:calc(var(--safe-top) + 5px)} .hero{padding:18px 14px 12px;gap:14px} .hero h1{font-size:40px} .sections-row{padding:8px 14px 18px;grid-template-columns:repeat(2,1fr)} .section{padding:0 14px 16px} .builder-showcase h2,.section-head h2{font-size:28px} .grid{grid-template-columns:1fr} .card-photo,.card-empty{height:190px} .sauce-orbs{justify-content:flex-start;overflow:auto;flex-wrap:nowrap;padding-bottom:8px;scrollbar-width:none} .sauce-orbs::-webkit-scrollbar{display:none} .sauce-orb{min-width:138px} .extra-modules{grid-template-columns:1fr 1fr} .builder-actions{flex-wrap:wrap} .builder-actions .ghost{width:100%} .summary-visual{grid-template-columns:1fr} }
+
+/* BUILD 8 cinematic + cache-bust */
+.version-stamp{position:fixed;right:9px;top:calc(var(--safe-top) + 1px);z-index:250;padding:4px 7px;border-radius:999px;background:rgba(8,13,22,.68);border:1px solid rgba(97,222,255,.12);font-size:8px;letter-spacing:.16em;color:rgba(200,235,255,.5);pointer-events:none}
+.builder-modal{background:radial-gradient(circle at 50% -12%,rgba(97,222,255,.13),transparent 32%),radial-gradient(circle at 92% 9%,rgba(129,112,255,.16),transparent 35%),linear-gradient(180deg,#0c1424,#070c16)}
+.builder-arena:before{content:"";position:absolute;inset:-25%;pointer-events:none;background:conic-gradient(from 210deg at 50% 45%,transparent 0 18%,rgba(97,222,255,.09) 22%,transparent 27% 49%,rgba(129,112,255,.09) 54%,transparent 60%);animation:arenaSweep8 8s linear infinite;z-index:0}
+.arena-stage{z-index:1}.arena-side.selected{animation:heroBreath8 2.8s ease-in-out infinite}.arena-side.selected img{animation:foodPush8 4.2s ease-in-out infinite}.arena-side.sauced .sauce-ribbons{animation:sauceReveal8 .48s cubic-bezier(.2,.86,.3,1)}.vs-token{animation:vsKick8 2.5s ease-in-out infinite}.extra-badge{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+@keyframes arenaSweep8{to{transform:rotate(360deg)}}@keyframes heroBreath8{0%,100%{box-shadow:0 18px 42px rgba(97,222,255,.10)}50%{box-shadow:0 24px 58px rgba(129,112,255,.20)}}@keyframes foodPush8{0%,100%{transform:scale(1.01)}50%{transform:scale(1.055)}}@keyframes sauceReveal8{from{opacity:0;transform:scale(.86) translateY(-10px)}to{opacity:1;transform:none}}@keyframes vsKick8{0%,100%{transform:scale(1)}50%{transform:scale(1.09);filter:drop-shadow(0 0 18px rgba(97,222,255,.38))}}
 </style>
 </head>
-<body><div style="position:fixed;right:8px;top:max(env(safe-area-inset-top),8px);z-index:9999;padding:4px 7px;border-radius:999px;background:rgba(7,13,22,.72);border:1px solid rgba(97,222,255,.22);font:700 8px/1 -apple-system;color:rgba(210,240,255,.65);letter-spacing:.12em;pointer-events:none">LIVE 9</div>
+<body><div class="version-stamp">BUILD 8</div>
 <div class="grid-bg"></div><div class="noise"></div>
 <div class="intro" id="intro"><div class="intro-mark"><span>ЛЕПЁШКА ЛЕПИТСЯ</span><small>SHAURMA CITY · MINI APP</small></div><div class="intro-line"><b></b></div></div>
 <div class="app">
@@ -429,7 +436,7 @@ qs('#showAll').addEventListener('click',showAll);
 qsa('[data-scroll]').forEach(btn=>btn.addEventListener('click',()=>{ qs(btn.dataset.scroll)?.scrollIntoView({behavior:'smooth',block:'start'}); qsa('.nav-btn').forEach(x=>x.classList.remove('active')); btn.classList.add('active'); }));
 qs('#cartNav').addEventListener('click',openCart); qs('#closeCart').addEventListener('click',closeCart); qs('#cartBackdrop').addEventListener('click',closeCart); qs('#checkout').addEventListener('click',()=>showToast(cart.length ? 'Заказ готов к оформлению' : 'Корзина пока пустая'));
 qs('#openBuilder').addEventListener('click',openBuilder); qs('#openBuilderHero').addEventListener('click',openBuilder); qs('#navBuilder').addEventListener('click',openBuilder); qs('#closeBuilder').addEventListener('click',closeBuilder); qs('#builderBackdrop').addEventListener('click',closeBuilder);
-leftSide.addEventListener('click',()=>selectType('Шаурма')); rightSide.addEventListener('click',()=>selectType('Лепёшка'));
+leftSide.addEventListener('click',function(e){e.preventDefault();selectType('Шаурма');}); rightSide.addEventListener('click',function(e){e.preventDefault();selectType('Лепёшка');});
 qs('#builderBack').addEventListener('click',goBackStep); qs('#builderNext').addEventListener('click',goNextStep);
 qs('#sauceOrbs').addEventListener('click',e=>{ const btn=e.target.closest('[data-sauce]'); if(btn) selectSauce(btn.dataset.sauce); });
 qs('#extraModules').addEventListener('click',e=>{ const btn=e.target.closest('[data-extra]'); if(btn) toggleExtra(btn.dataset.extra); });
