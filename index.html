@@ -25,7 +25,7 @@
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.choice{position:relative;min-height:102px;padding:13px;border-radius:19px;border:1px solid var(--line);background:rgba(255,255,255,.03);text-align:left;overflow:hidden}.choice.selected{border-color:rgba(47,109,246,.42);box-shadow:0 0 0 1px rgba(47,109,246,.13) inset}.choice b{display:block;font-size:16px}.choice small{display:block;color:var(--muted);margin-top:3px}.mark{position:absolute;right:10px;top:10px;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);background:rgba(255,255,255,.04)}.choice.selected .mark{background:linear-gradient(135deg,#477fff,#1d4eb8);border-color:transparent}.note{margin:8px 0;padding:9px 10px;border-radius:13px;background:rgba(47,109,246,.08);border:1px solid rgba(47,109,246,.16);color:#c5d1e8;font-size:11px}.extraTag{position:absolute;z-index:4;padding:7px 9px;border-radius:999px;background:rgba(7,12,20,.84);border:1px solid rgba(255,255,255,.1);font-size:10px;font-weight:850}.sum{padding:13px;border-radius:19px;background:rgba(255,255,255,.03);border:1px solid var(--line)}.sum h4{font-size:21px;margin:0 0 8px}.chips{display:flex;flex-wrap:wrap;gap:6px}.chip2{padding:7px 9px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-size:10px;font-weight:800}.meta{display:grid;gap:7px;margin-top:10px}.meta div{display:flex;justify-content:space-between;gap:10px;color:var(--muted)}.meta b{color:white;text-align:right}.bactions{flex:0 0 auto;display:flex;gap:8px;padding-top:9px}.bactions .pri{flex:1}.toast{position:fixed;left:50%;bottom:calc(95px + var(--safeB));z-index:100;transform:translate(-50%,18px);opacity:0;pointer-events:none;transition:.2s;padding:10px 13px;border-radius:13px;background:#101923;border:1px solid rgba(47,109,246,.25)}.toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:820px){.hero,.showcase{grid-template-columns:1fr}.foodhero{min-height:400px}.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:540px){.hero{padding:17px 12px 10px}.hero h1{font-size:39px}.cats{padding:5px 12px 15px;grid-template-columns:repeat(2,1fr)}.section{padding:0 12px 15px}.grid{grid-template-columns:1fr}.pic{height:188px}.typecard{min-height:calc(100dvh - 142px)}}
 
-/* BUILD 17 — vertical confrontation posters */
+/* BUILD 18 — vertical confrontation posters */
 .typegrid{
   height:100%;
   display:grid;
@@ -92,7 +92,7 @@
 }
 
 
-/* BUILD 17 — natural-language final order description */
+/* BUILD 18 — natural-language final order description */
 .orderStory{
   margin:12px 0 14px;
   padding:16px 16px 17px;
@@ -108,14 +108,14 @@
 .chips{display:none!important}
 
 
-/* BUILD 17 — real checkout */
+/* BUILD 18 — real checkout */
 .checkoutModal{position:fixed;inset:0;z-index:90;background:rgba(5,9,15,.78);backdrop-filter:blur(12px);display:grid;place-items:end center;opacity:0;visibility:hidden;pointer-events:none;transition:.22s}
 .checkoutModal.open{opacity:1;visibility:visible;pointer-events:auto}
 .checkoutCard{width:min(680px,100%);max-height:92dvh;overflow:auto;border-radius:28px 28px 0 0;background:linear-gradient(180deg,#121923,#0b1119);border:1px solid var(--line);padding:16px 16px calc(16px + var(--safeB))}
 .checkoutCard h3{font-size:28px;margin:4px 0 6px}.checkoutCard p{color:var(--muted);margin:0 0 14px}.form{display:grid;gap:10px}.field{display:grid;gap:6px}.field label{font-size:11px;color:#9ba7ba;font-weight:800}.field input,.field textarea{width:100%;border:1px solid var(--line);background:rgba(255,255,255,.035);color:white;border-radius:15px;padding:13px;outline:none;font:inherit}.field textarea{min-height:82px;resize:vertical}.checkoutActions{display:flex;gap:8px;margin-top:12px}.checkoutActions .pri{flex:1}.orderOk{display:none;padding:18px 0;text-align:center}.orderOk.show{display:block}.orderOk b{display:block;font-size:30px;margin:7px 0}.orderOk p{color:var(--muted)}
 
 
-/* BUILD 17 — Telegram identity + My Orders */
+/* BUILD 18 — Telegram identity + My Orders */
 .myOrdersPanel{position:fixed;inset:0;z-index:88;background:#0a0f16;opacity:0;visibility:hidden;pointer-events:none;transition:.22s}
 .myOrdersPanel.open{opacity:1;visibility:visible;pointer-events:auto}
 .myOrdersInner{height:100dvh;max-width:760px;margin:auto;padding:calc(var(--safeT) + 10px) 12px calc(var(--safeB) + 18px);overflow:auto;background:linear-gradient(180deg,#0d131c,#101821 58%,#0a0f16)}
@@ -126,12 +126,152 @@
 .activeOrder .bigStatus{font-size:28px;font-weight:900;letter-spacing:-.03em;margin:3px 0}.statusTrack{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:12px 0}.statusTrack i{height:5px;border-radius:99px;background:rgba(255,255,255,.07)}.statusTrack i.on{background:linear-gradient(90deg,#2f6df6,#6b90ff);box-shadow:0 0 12px rgba(47,109,246,.22)}
 .historyList{display:grid;gap:8px}.historyItem{padding:13px;border-radius:17px;background:rgba(255,255,255,.025);border:1px solid var(--line)}.historyItem .r{display:flex;justify-content:space-between;gap:10px}.historyItem small{color:var(--muted)}.tgUnavailable{padding:18px;border-radius:18px;border:1px dashed var(--line);color:var(--muted);text-align:center}.miniProfile{font-size:10px;color:#8ea9ff}
 
+
+/* BUILD 18 — Telegram Mini App viewport hardening */
+:root{--appH:100dvh}
+html,body{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;overscroll-behavior-x:none}
+body{min-height:var(--appH)}
+.app{width:100%;max-width:760px;overflow-x:clip}
+.top{width:calc(100% - 20px);max-width:740px;margin-left:auto;margin-right:auto}
+.hero,.section,.cats{width:100%;min-width:0}
+.hero>*{min-width:0}
+.foodhero,.showcase,.card,.preview{max-width:100%}
+.nav{max-width:740px;margin:auto}
+.builder{
+  width:100%;
+  height:var(--appH);
+  min-height:var(--appH);
+  max-height:var(--appH);
+  overflow:hidden;
+  overscroll-behavior:none;
+}
+.bmodal{
+  width:100%;
+  max-width:760px;
+  height:var(--appH)!important;
+  min-height:0;
+  max-height:var(--appH);
+  margin:0 auto;
+  padding:calc(env(safe-area-inset-top) + 8px) 10px calc(env(safe-area-inset-bottom) + 8px);
+  overflow:hidden;
+}
+.bhead{height:46px;min-height:46px;flex:0 0 46px}
+.sceneWrap{flex:1 1 auto;min-height:0;height:auto;overflow:hidden}
+.scene{
+  width:100%;
+  height:100%;
+  min-width:0;
+  min-height:0;
+  overflow:hidden;
+  overscroll-behavior:contain;
+}
+.scene.active{overflow:hidden}
+.bactions{
+  flex:0 0 auto;
+  min-height:58px;
+  padding-top:8px;
+  padding-bottom:0;
+  background:linear-gradient(180deg,rgba(10,15,22,0),#0a0f16 28%);
+}
+.bactions .ghost,.bactions .pri{min-width:0;height:50px;padding:11px 14px}
+.typegrid{
+  width:100%;
+  height:100%;
+  min-width:0;
+  min-height:0;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  grid-template-rows:minmax(0,1fr);
+  gap:8px!important;
+  padding:6px!important;
+  overflow:hidden;
+}
+.typecard{
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:none!important;
+  max-height:none!important;
+  aspect-ratio:auto!important;
+  align-self:stretch!important;
+  border-radius:22px!important;
+  transform:scale(.99);
+}
+.typecard img{width:100%;height:100%;min-width:0;object-fit:cover;object-position:center}
+.typecard.selected{transform:scale(1)}
+.tcopy{left:9px!important;right:9px!important;bottom:10px!important;padding-top:52px!important}
+.tcopy b{font-size:clamp(17px,5.2vw,23px)!important;line-height:1}
+.tcopy small{font-size:10px!important}
+.confirm{
+  left:8px!important;
+  right:8px!important;
+  bottom:68px!important;
+  max-width:none!important;
+  transform:translateY(6px)!important;
+  text-align:center;
+  white-space:normal!important;
+  line-height:1.2;
+}
+.typecard.selected .confirm{transform:none!important}
+.stage{
+  width:100%;
+  height:100%!important;
+  min-height:0;
+  overflow-y:auto!important;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-y:contain;
+  padding:8px 8px 18px!important;
+}
+.visual{
+  width:100%;
+  height:clamp(190px,31vh,270px);
+  min-height:190px!important;
+  max-height:270px;
+  margin-bottom:8px;
+}
+.grid2{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.choice{min-width:0;min-height:92px;padding:12px 10px}
+.choice b{font-size:15px;line-height:1.15;padding-right:28px}
+.choice small{font-size:11px}
+.sum{margin-bottom:4px}
+.orderStory{font-size:15px;line-height:1.4;padding:14px}
+.checkoutModal,.myOrdersPanel{height:var(--appH);min-height:var(--appH);max-height:var(--appH)}
+.checkoutCard{max-height:calc(var(--appH) - env(safe-area-inset-top));overflow-y:auto;-webkit-overflow-scrolling:touch}
+.myOrdersInner{height:var(--appH)!important;min-height:0;overflow-y:auto}
+@media(max-width:540px){
+  .hero{grid-template-columns:1fr!important}
+  .foodhero{min-height:360px}
+  .builder{inset:0}
+  .bmodal{padding-left:8px;padding-right:8px}
+  .sceneWrap{border-radius:20px}
+}
+@media(max-height:720px){
+  .bhead{height:42px;min-height:42px;flex-basis:42px}
+  .bhead h3{font-size:18px}
+  .bactions{min-height:52px;padding-top:5px}
+  .bactions .ghost,.bactions .pri{height:46px;min-height:46px}
+  .typegrid{padding:5px!important;gap:6px!important}
+  .tcopy b{font-size:18px!important}
+  .tcopy small{font-size:9px!important}
+  .confirm{bottom:61px!important;font-size:8.5px!important;padding:6px!important}
+  .visual{height:180px;min-height:180px!important}
+  .choice{min-height:84px;padding:10px 9px}
+  .note{margin:6px 0;padding:7px 9px}
+}
+@media(max-height:620px){
+  .visual{height:150px;min-height:150px!important}
+  .choice{min-height:76px}
+  .choice small{display:none}
+  .orderStory{font-size:14px;padding:11px}
+}
+
 </style>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
 <div class="app">
-<header class="top"><div><b>Москва</b><small>Доставка · 25 минут</small></div><div class="brand"><b>SHAURMA <i>CITY</i></b><small>FOOD SYSTEM</small></div><div class="build">BUILD 17</div></header>
+<header class="top"><div><b>Москва</b><small>Доставка · 25 минут</small></div><div class="brand"><b>SHAURMA <i>CITY</i></b><small>FOOD SYSTEM</small></div><div class="build">BUILD 18</div></header>
 <section class="hero" id="home"><div><div class="k">Шаурма как цифровой продукт</div><h1><span>Собери вкус</span><br>в несколько<br>касаний.</h1><p>Чистый графитово-синий интерфейс, живой конструктор и рабочая корзина.</p><div class="actions"><button class="pri" id="heroBuilder">Собрать свою</button><button class="sec" data-go="#menu">Меню</button></div></div><div class="foodhero" id="heroMedia"><img id="heroImg" src="https://static.insales-cdn.com/images/collections/1/6249/96434281/01e9ad2bbd411f098ab164668478d73_1.jpeg"><div class="heroChip"><b id="heroLabel">Шаурма</b><small id="heroSub">Классика · сырная</small></div></div></section>
 <section class="cats">
 <button class="cat active" data-filter="shawarma"><b>Шаурма</b><small>Классика и сырная</small></button>
@@ -166,6 +306,21 @@ const P=[{id:"classic",n:"Шаурма классика",c:"shawarma",d:"Кур�
 const SA=[{n:"Биг Тейсти",t:"#e5c8a9"},{n:"Барбекю",t:"#a94d32"},{n:"Гранатовый",t:"#9b1f3e"},{n:"Сырный",t:"#e0ad3e"},{n:"Чесночный",t:"#eceff5"}],EX=["Картошка фри","Халапеньо","Лук","Сыр"];
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 let filter="shawarma",cart=[],phase="type",armed=null,st={type:null,sauces:[],extras:[]};
+function syncMiniAppViewport(){
+  const tg=window.Telegram&&window.Telegram.WebApp;
+  const setH=()=>{
+    const h=(tg&&Number(tg.viewportStableHeight||tg.viewportHeight))||(window.visualViewport&&window.visualViewport.height)||window.innerHeight;
+    if(h>300)document.documentElement.style.setProperty("--appH",Math.round(h)+"px");
+  };
+  setH();
+  if(tg){
+    try{tg.expand();tg.disableVerticalSwipes&&tg.disableVerticalSwipes()}catch{}
+    tg.onEvent&&tg.onEvent("viewportChanged",setH);
+  }
+  window.visualViewport&&window.visualViewport.addEventListener("resize",setH);
+  window.addEventListener("orientationchange",()=>setTimeout(setH,120));
+  window.addEventListener("resize",setH);
+}
 async function telegramAuth(){
   try{
     const tg=window.Telegram&&window.Telegram.WebApp;
@@ -263,6 +418,6 @@ function next(){if(phase==="type")return;if(phase==="sauce"){if(!st.sauces.lengt
 function prev(){if(phase==="sauce"){phase="type";scene("#sceneType");armed=st.type;syncBuilder()}else if(phase==="extras"){phase="sauce";scene("#sceneSauce");syncBuilder()}else if(phase==="ready"){phase="extras";scene("#sceneExtras");syncBuilder()}}
 document.addEventListener("click",e=>{const a=e.target.closest("[data-add]");if(a)addProduct(a.dataset.add);const f=e.target.closest("[data-filter]");if(f)setFilter(f.dataset.filter);const g=e.target.closest("[data-go]");if(g){document.querySelector(g.dataset.go)?.scrollIntoView({behavior:"smooth"});$$(".nav button").forEach(x=>x.classList.remove("active"));g.classList.add("active")}const act=e.target.closest("[data-act]");if(act){const i=+act.dataset.i;if(!cart[i])return;if(act.dataset.act==="+")cart[i].q++;if(act.dataset.act==="-"){cart[i].q--;if(cart[i].q<=0)cart.splice(i,1)}if(act.dataset.act==="x")cart.splice(i,1);cartRender()}const s=e.target.closest("[data-sauce]");if(s)toggleSauce(s.dataset.sauce);const ex=e.target.closest("[data-extra]");if(ex)toggleExtra(ex.dataset.extra)});
 $("#typeSh").onclick=()=>chooseType("Шаурма");$("#typeFl").onclick=()=>chooseType("Лепёшка");$("#openBuilder").onclick=openBuilder;$("#heroBuilder").onclick=openBuilder;$("#navBuilder").onclick=openBuilder;$("#bclose").onclick=closeBuilder;$("#next").onclick=next;$("#prev").onclick=prev;$("#cartBtn").onclick=openCart;$("#cartClose").onclick=closeCart;$("#cartBack").onclick=closeCart;$("#myOrdersBtn").onclick=openMyOrders;$("#myOrdersClose").onclick=closeMyOrders;$("#checkout").onclick=openCheckout;$("#checkoutCancel").onclick=closeCheckout;$("#checkoutSend").onclick=sendOrder;$("#orderDone").onclick=closeCheckout;$("#checkoutModal").addEventListener("click",e=>{if(e.target===$("#checkoutModal"))closeCheckout()});$("#showAll").onclick=()=>{filter="";$("#menuTitle").textContent="Всё меню";$$("[data-filter]").forEach(x=>x.classList.remove("active"));render()};
-setFilter("shawarma");cartRender();syncBuilder();renderMyOrders();telegramAuth();
+syncMiniAppViewport();setFilter("shawarma");cartRender();syncBuilder();renderMyOrders();telegramAuth();
 </script>
 </body></html>
