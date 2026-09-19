@@ -233,9 +233,12 @@ app.get('/api/shaurma/my-stream',(req,res)=>{
 });
 
 app.post('/api/shaurma/orders',async(req,res)=>{
- const {items,total,customer_name,phone,address,comment}=req.body||{};
+ const {items,total,customer_name,phone,address,comment,telegram_init_data}=req.body||{};
  const sess=telegramSession(req);
- const tgUser=sess?sess.user:null;
+ let tgUser=sess?sess.user:null;
+ if(!tgUser && telegram_init_data){
+  try{tgUser=verifyTelegramInitData(telegram_init_data)}catch{}
+ }
  if(!Array.isArray(items)||!items.length)return res.status(400).json({error:'empty_order'});
  if(!phone)return res.status(400).json({error:'phone_required'});
  const num=orderNumber();
