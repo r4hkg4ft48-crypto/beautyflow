@@ -25,7 +25,7 @@
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.choice{position:relative;min-height:102px;padding:13px;border-radius:19px;border:1px solid var(--line);background:rgba(255,255,255,.03);text-align:left;overflow:hidden}.choice.selected{border-color:rgba(47,109,246,.42);box-shadow:0 0 0 1px rgba(47,109,246,.13) inset}.choice b{display:block;font-size:16px}.choice small{display:block;color:var(--muted);margin-top:3px}.mark{position:absolute;right:10px;top:10px;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);background:rgba(255,255,255,.04)}.choice.selected .mark{background:linear-gradient(135deg,#477fff,#1d4eb8);border-color:transparent}.note{margin:8px 0;padding:9px 10px;border-radius:13px;background:rgba(47,109,246,.08);border:1px solid rgba(47,109,246,.16);color:#c5d1e8;font-size:11px}.extraTag{position:absolute;z-index:4;padding:7px 9px;border-radius:999px;background:rgba(7,12,20,.84);border:1px solid rgba(255,255,255,.1);font-size:10px;font-weight:850}.sum{padding:13px;border-radius:19px;background:rgba(255,255,255,.03);border:1px solid var(--line)}.sum h4{font-size:21px;margin:0 0 8px}.chips{display:flex;flex-wrap:wrap;gap:6px}.chip2{padding:7px 9px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-size:10px;font-weight:800}.meta{display:grid;gap:7px;margin-top:10px}.meta div{display:flex;justify-content:space-between;gap:10px;color:var(--muted)}.meta b{color:white;text-align:right}.bactions{flex:0 0 auto;display:flex;gap:8px;padding-top:9px}.bactions .pri{flex:1}.toast{position:fixed;left:50%;bottom:calc(95px + var(--safeB));z-index:100;transform:translate(-50%,18px);opacity:0;pointer-events:none;transition:.2s;padding:10px 13px;border-radius:13px;background:#101923;border:1px solid rgba(47,109,246,.25)}.toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:820px){.hero,.showcase{grid-template-columns:1fr}.foodhero{min-height:400px}.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:540px){.hero{padding:17px 12px 10px}.hero h1{font-size:39px}.cats{padding:5px 12px 15px;grid-template-columns:repeat(2,1fr)}.section{padding:0 12px 15px}.grid{grid-template-columns:1fr}.pic{height:188px}.typecard{min-height:calc(100dvh - 142px)}}
 
-/* BUILD 19 — vertical confrontation posters */
+/* BUILD 20 — vertical confrontation posters */
 .typegrid{
   height:100%;
   display:grid;
@@ -92,7 +92,7 @@
 }
 
 
-/* BUILD 19 — natural-language final order description */
+/* BUILD 20 — natural-language final order description */
 .orderStory{
   margin:12px 0 14px;
   padding:16px 16px 17px;
@@ -108,14 +108,14 @@
 .chips{display:none!important}
 
 
-/* BUILD 19 — real checkout */
+/* BUILD 20 — real checkout */
 .checkoutModal{position:fixed;inset:0;z-index:90;background:rgba(5,9,15,.78);backdrop-filter:blur(12px);display:grid;place-items:end center;opacity:0;visibility:hidden;pointer-events:none;transition:.22s}
 .checkoutModal.open{opacity:1;visibility:visible;pointer-events:auto}
 .checkoutCard{width:min(680px,100%);max-height:92dvh;overflow:auto;border-radius:28px 28px 0 0;background:linear-gradient(180deg,#121923,#0b1119);border:1px solid var(--line);padding:16px 16px calc(16px + var(--safeB))}
 .checkoutCard h3{font-size:28px;margin:4px 0 6px}.checkoutCard p{color:var(--muted);margin:0 0 14px}.form{display:grid;gap:10px}.field{display:grid;gap:6px}.field label{font-size:11px;color:#9ba7ba;font-weight:800}.field input,.field textarea{width:100%;border:1px solid var(--line);background:rgba(255,255,255,.035);color:white;border-radius:15px;padding:13px;outline:none;font:inherit}.field textarea{min-height:82px;resize:vertical}.checkoutActions{display:flex;gap:8px;margin-top:12px}.checkoutActions .pri{flex:1}.orderOk{display:none;padding:18px 0;text-align:center}.orderOk.show{display:block}.orderOk b{display:block;font-size:30px;margin:7px 0}.orderOk p{color:var(--muted)}
 
 
-/* BUILD 19 — Telegram identity + My Orders */
+/* BUILD 20 — Telegram identity + My Orders */
 .myOrdersPanel{position:fixed;inset:0;z-index:88;background:#0a0f16;opacity:0;visibility:hidden;pointer-events:none;transition:.22s}
 .myOrdersPanel.open{opacity:1;visibility:visible;pointer-events:auto}
 .myOrdersInner{height:100dvh;max-width:760px;margin:auto;padding:calc(var(--safeT) + 10px) 12px calc(var(--safeB) + 18px);overflow:auto;background:linear-gradient(180deg,#0d131c,#101821 58%,#0a0f16)}
@@ -127,7 +127,7 @@
 .historyList{display:grid;gap:8px}.historyItem{padding:13px;border-radius:17px;background:rgba(255,255,255,.025);border:1px solid var(--line)}.historyItem .r{display:flex;justify-content:space-between;gap:10px}.historyItem small{color:var(--muted)}.tgUnavailable{padding:18px;border-radius:18px;border:1px dashed var(--line);color:var(--muted);text-align:center}.miniProfile{font-size:10px;color:#8ea9ff}
 
 
-/* BUILD 19 — Telegram Mini App viewport hardening */
+/* BUILD 20 — Telegram Mini App viewport hardening */
 :root{--appH:100dvh}
 html,body{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;overscroll-behavior-x:none}
 body{min-height:var(--appH)}
@@ -267,7 +267,7 @@ body{min-height:var(--appH)}
 }
 
 
-/* BUILD 19 — cinematic builder interactions */
+/* BUILD 20 — cinematic builder interactions */
 .choice.standard-sauce{
   grid-column:1/-1;
   border:1px solid rgba(255,72,72,.82)!important;
@@ -344,12 +344,40 @@ body{min-height:var(--appH)}
   .visual>img{transition:none!important}
 }
 
+
+/* BUILD 20 — photorealistic food-cinema canvas */
+.builderFx,.sauceLines,.extraTag{display:none!important}
+.visual{position:relative;isolation:isolate;background:#090d12}
+.visual>img{z-index:1;position:relative}
+.foodFxCanvas{
+  position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
+  border-radius:inherit;z-index:5;
+}
+.foodFxCanvas.motion{z-index:6}
+.visual .vtitle{z-index:9!important}
+.visual.food-cinema>img{
+  animation:foodCameraPush .82s cubic-bezier(.18,.75,.18,1);
+}
+.visual.food-impact{
+  animation:foodImpact .42s cubic-bezier(.2,.72,.2,1);
+}
+@keyframes foodCameraPush{
+  0%{transform:scale(1);filter:saturate(1) contrast(1)}
+  38%{transform:scale(1.026);filter:saturate(1.08) contrast(1.035)}
+  100%{transform:scale(1);filter:saturate(1.03) contrast(1.015)}
+}
+@keyframes foodImpact{
+  0%{transform:translateZ(0)}
+  35%{transform:translateY(1px)}
+  100%{transform:translateY(0)}
+}
+
 </style>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
 <div class="app">
-<header class="top"><div><b>Москва</b><small>Доставка · 25 минут</small></div><div class="brand"><b>SHAURMA <i>CITY</i></b><small>FOOD SYSTEM</small></div><div class="build">BUILD 19</div></header>
+<header class="top"><div><b>Москва</b><small>Доставка · 25 минут</small></div><div class="brand"><b>SHAURMA <i>CITY</i></b><small>FOOD SYSTEM</small></div><div class="build">BUILD 20</div></header>
 <section class="hero" id="home"><div><div class="k">Шаурма как цифровой продукт</div><h1><span>Собери вкус</span><br>в несколько<br>касаний.</h1><p>Чистый графитово-синий интерфейс, живой конструктор и рабочая корзина.</p><div class="actions"><button class="pri" id="heroBuilder">Собрать свою</button><button class="sec" data-go="#menu">Меню</button></div></div><div class="foodhero" id="heroMedia"><img id="heroImg" src="https://static.insales-cdn.com/images/collections/1/6249/96434281/01e9ad2bbd411f098ab164668478d73_1.jpeg"><div class="heroChip"><b id="heroLabel">Шаурма</b><small id="heroSub">Классика · сырная</small></div></div></section>
 <section class="cats">
 <button class="cat active" data-filter="shawarma"><b>Шаурма</b><small>Классика и сырная</small></button>
@@ -536,5 +564,190 @@ function prev(){if(phase==="sauce"){phase="type";scene("#sceneType");armed=st.ty
 document.addEventListener("click",e=>{const a=e.target.closest("[data-add]");if(a)addProduct(a.dataset.add);const f=e.target.closest("[data-filter]");if(f)setFilter(f.dataset.filter);const g=e.target.closest("[data-go]");if(g){document.querySelector(g.dataset.go)?.scrollIntoView({behavior:"smooth"});$$(".nav button").forEach(x=>x.classList.remove("active"));g.classList.add("active")}const act=e.target.closest("[data-act]");if(act){const i=+act.dataset.i;if(!cart[i])return;if(act.dataset.act==="+")cart[i].q++;if(act.dataset.act==="-"){cart[i].q--;if(cart[i].q<=0)cart.splice(i,1)}if(act.dataset.act==="x")cart.splice(i,1);cartRender()}const s=e.target.closest("[data-sauce]");if(s)toggleSauce(s.dataset.sauce);const ex=e.target.closest("[data-extra]");if(ex)toggleExtra(ex.dataset.extra)});
 $("#typeSh").onclick=()=>chooseType("Шаурма");$("#typeFl").onclick=()=>chooseType("Лепёшка");$("#openBuilder").onclick=openBuilder;$("#heroBuilder").onclick=openBuilder;$("#navBuilder").onclick=openBuilder;$("#bclose").onclick=closeBuilder;$("#next").onclick=next;$("#prev").onclick=prev;$("#cartBtn").onclick=openCart;$("#cartClose").onclick=closeCart;$("#cartBack").onclick=closeCart;$("#myOrdersBtn").onclick=openMyOrders;$("#myOrdersClose").onclick=closeMyOrders;$("#checkout").onclick=openCheckout;$("#checkoutCancel").onclick=closeCheckout;$("#checkoutSend").onclick=sendOrder;$("#orderDone").onclick=closeCheckout;$("#checkoutModal").addEventListener("click",e=>{if(e.target===$("#checkoutModal"))closeCheckout()});$("#showAll").onclick=()=>{filter="";$("#menuTitle").textContent="Всё меню";$$("[data-filter]").forEach(x=>x.classList.remove("active"));render()};
 syncMiniAppViewport();setFilter("shawarma");cartRender();syncBuilder();renderMyOrders();telegramAuth();
+
+/* BUILD 20 — canvas food physics */
+const SAUCE_PHYS={
+ "Стандартные соусы":[
+  {c:"#f1eee5",edge:"#b6aa97",hi:"#ffffff",w:10,vis:1.05},
+  {c:"#bc3c35",edge:"#70231f",hi:"#ef8d7b",w:7,vis:.82}
+ ],
+ "Биг Тейсти":[{c:"#d5ad86",edge:"#8f674a",hi:"#f2d8bb",w:10,vis:1.0}],
+ "Барбекю":[{c:"#7d3024",edge:"#42150f",hi:"#b76045",w:8,vis:.82}],
+ "Гранатовый":[{c:"#861832",edge:"#4e0a1a",hi:"#d05a70",w:6,vis:.68}],
+ "Сырный":[{c:"#e3aa30",edge:"#9f6918",hi:"#ffd870",w:11,vis:1.18}],
+ "Чесночный":[{c:"#ece9df",edge:"#b8b1a3",hi:"#ffffff",w:9,vis:1.08}]
+};
+function ensureFoodCanvases(visual){
+ if(!visual)return null;
+ let p=visual.querySelector("canvas.foodFxCanvas.persist");
+ let m=visual.querySelector("canvas.foodFxCanvas.motion");
+ if(!p){p=document.createElement("canvas");p.className="foodFxCanvas persist";visual.appendChild(p)}
+ if(!m){m=document.createElement("canvas");m.className="foodFxCanvas motion";visual.appendChild(m)}
+ const r=visual.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);
+ if(r.width<20||r.height<20)return {p,m,w:0,h:0,d};
+ for(const cv of [p,m]){
+  const W=Math.round(r.width*d),H=Math.round(r.height*d);
+  if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
+ }
+ return {p,m,w:r.width,h:r.height,d};
+}
+function ctx2(cv,d){const x=cv.getContext("2d");x.setTransform(d,0,0,d,0,0);x.lineCap="round";x.lineJoin="round";return x}
+function triggerFoodCamera(visual){
+ visual.classList.remove("food-cinema");void visual.offsetWidth;visual.classList.add("food-cinema");
+ setTimeout(()=>visual.classList.remove("food-cinema"),850);
+}
+function saucePath(ctx,w,h,idx,style){
+ const y=h*(.45+idx*.055),x0=w*.27,x1=w*.73;
+ ctx.save();
+ ctx.shadowColor="rgba(0,0,0,.34)";ctx.shadowBlur=5;ctx.shadowOffsetY=2;
+ ctx.strokeStyle=style.edge;ctx.lineWidth=style.w+3;ctx.globalAlpha=.74;
+ ctx.beginPath();ctx.moveTo(x0,y);
+ ctx.bezierCurveTo(w*.38,y-h*.045,w*.51,y+h*.06,w*.62,y-h*.015);
+ ctx.bezierCurveTo(w*.67,y-h*.035,w*.70,y+h*.018,x1,y);ctx.stroke();
+ ctx.shadowColor="transparent";ctx.strokeStyle=style.c;ctx.lineWidth=style.w;ctx.globalAlpha=.97;
+ ctx.stroke();
+ ctx.strokeStyle=style.hi;ctx.lineWidth=Math.max(1.2,style.w*.18);ctx.globalAlpha=.48;
+ ctx.translate(0,-style.w*.16);ctx.stroke();ctx.restore();
+}
+function sauceSplat(ctx,x,y,style,seed=0){
+ ctx.save();ctx.shadowColor="rgba(0,0,0,.26)";ctx.shadowBlur=4;ctx.shadowOffsetY=2;
+ for(let i=0;i<5;i++){
+  const a=(i*1.37+seed)*2.2,r=style.w*(.35+(i%3)*.14);
+  const dx=Math.cos(a)*style.w*(.8+i*.25),dy=Math.sin(a)*style.w*(.45+i*.1);
+  const g=ctx.createRadialGradient(x+dx-r*.3,y+dy-r*.35,1,x+dx,y+dy,r);
+  g.addColorStop(0,style.hi);g.addColorStop(.23,style.c);g.addColorStop(1,style.edge);
+  ctx.fillStyle=g;ctx.globalAlpha=.9;ctx.beginPath();ctx.ellipse(x+dx,y+dy,r,r*.74,a*.2,0,Math.PI*2);ctx.fill();
+ }
+ ctx.restore();
+}
+function paintStaticSauces(visual,names){
+ const z=ensureFoodCanvases(visual);if(!z||!z.w)return;
+ const c=ctx2(z.p,z.d);c.clearRect(0,0,z.w,z.h);
+ let idx=0;
+ names.forEach((name)=>{
+  (SAUCE_PHYS[name]||[]).forEach((style,j)=>{
+   saucePath(c,z.w,z.h,idx,style);
+   sauceSplat(c,z.w*(.31+((idx*17)%35)/100),z.h*(.47+idx*.05),style,idx+j);
+   idx++;
+  });
+ });
+}
+function drawFallingDrop(ctx,x,y,r,style,stretch=1){
+ ctx.save();ctx.shadowColor="rgba(0,0,0,.28)";ctx.shadowBlur=7;ctx.shadowOffsetY=3;
+ const g=ctx.createRadialGradient(x-r*.32,y-r*.45,1,x,y,r*1.15);
+ g.addColorStop(0,style.hi);g.addColorStop(.2,style.c);g.addColorStop(.78,style.c);g.addColorStop(1,style.edge);
+ ctx.fillStyle=g;ctx.beginPath();
+ ctx.ellipse(x,y,r*.78,r*stretch,0,0,Math.PI*2);ctx.fill();
+ ctx.globalAlpha=.55;ctx.fillStyle="rgba(255,255,255,.65)";ctx.beginPath();
+ ctx.ellipse(x-r*.22,y-r*.34,r*.14,r*.24,-.5,0,Math.PI*2);ctx.fill();ctx.restore();
+}
+function animateSauce(name){
+ const visual=$("#sceneSauce .visual"),styles=SAUCE_PHYS[name];if(!visual||!styles)return;
+ const z=ensureFoodCanvases(visual);if(!z||!z.w)return;const m=ctx2(z.m,z.d);
+ triggerFoodCamera(visual);
+ const start=performance.now(),dur=820,style=styles[0],tx=z.w*(.42+Math.random()*.16),ty=z.h*.50;
+ function frame(now){
+  const t=Math.min(1,(now-start)/dur),ease=1-Math.pow(1-t,3);
+  m.clearRect(0,0,z.w,z.h);
+  const y=-24+(ty+24)*ease,x=tx+Math.sin(t*8)*4;
+  if(t<.77){
+   drawFallingDrop(m,x,y,style,7+style.w*.25,1.45);
+   for(let k=1;k<4;k++){const tt=t-k*.06;if(tt>0)drawFallingDrop(m,x+(k%2?2:-2),Math.max(-20,y-k*24),style,2.8+k*.5,1.2)}
+  }
+  if(t>.67){
+   const q=(t-.67)/.33;m.globalAlpha=Math.max(0,1-q*.6);
+   sauceSplat(m,tx,ty,style,3);
+   m.globalAlpha=1;
+  }
+  if(t<1)requestAnimationFrame(frame);else{
+   m.clearRect(0,0,z.w,z.h);paintStaticSauces(visual,st.sauces);
+   visual.classList.add("food-impact");setTimeout(()=>visual.classList.remove("food-impact"),430);
+  }
+ }
+ requestAnimationFrame(frame);
+}
+function drawIngredient(ctx,name,x,y,scale,rot){
+ ctx.save();ctx.translate(x,y);ctx.rotate(rot);ctx.scale(scale,scale);
+ ctx.shadowColor="rgba(0,0,0,.32)";ctx.shadowBlur=6;ctx.shadowOffsetY=4;
+ if(name==="Картошка фри"){
+  const g=ctx.createLinearGradient(-5,-22,7,22);g.addColorStop(0,"#ffd978");g.addColorStop(.48,"#d99a2d");g.addColorStop(1,"#925b18");
+  ctx.fillStyle=g;ctx.beginPath();ctx.roundRect(-5,-22,10,44,3);ctx.fill();
+  ctx.strokeStyle="rgba(255,236,166,.55)";ctx.lineWidth=1.2;ctx.stroke();
+ }else if(name==="Халапеньо"){
+  ctx.fillStyle="#214f27";ctx.beginPath();ctx.ellipse(0,0,15,11,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle="#4d9a45";ctx.beginPath();ctx.ellipse(0,0,11.5,8,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle="#182d18";ctx.beginPath();ctx.ellipse(0,0,6.2,4.2,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle="#e6d48e";for(const a of [-1.8,-.45,.8]){ctx.beginPath();ctx.ellipse(Math.cos(a)*5,Math.sin(a)*3,1.25,.75,a,0,Math.PI*2);ctx.fill()}
+  ctx.strokeStyle="rgba(255,255,255,.18)";ctx.lineWidth=1;ctx.beginPath();ctx.arc(-2,-2,8,-2.5,-.3);ctx.stroke();
+ }else if(name==="Лук"){
+  ctx.strokeStyle="rgba(242,222,244,.92)";ctx.lineWidth=4;ctx.beginPath();ctx.ellipse(0,0,15,10,0,0,Math.PI*2);ctx.stroke();
+  ctx.strokeStyle="rgba(153,92,159,.38)";ctx.lineWidth=1.5;ctx.beginPath();ctx.ellipse(0,0,12.5,8,0,0,Math.PI*2);ctx.stroke();
+ }else{
+  const g=ctx.createLinearGradient(-14,-10,14,12);g.addColorStop(0,"#ffe182");g.addColorStop(.55,"#e9b844");g.addColorStop(1,"#a96e1c");
+  ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(-15,-8);ctx.lineTo(13,-12);ctx.lineTo(16,7);ctx.lineTo(-10,11);ctx.closePath();ctx.fill();
+  ctx.fillStyle="rgba(255,245,181,.38)";ctx.fillRect(-10,-6,19,2);
+ }
+ ctx.restore();
+}
+function paintStaticExtras(visual,names){
+ const z=ensureFoodCanvases(visual);if(!z||!z.w)return;
+ const c=ctx2(z.p,z.d);c.clearRect(0,0,z.w,z.h);
+ let sauceIdx=0;st.sauces.forEach(n=>(SAUCE_PHYS[n]||[]).forEach(style=>{saucePath(c,z.w,z.h,sauceIdx++,style)}));
+ const slots=[[.34,.50,-.28],[.46,.55,.22],[.58,.49,-.12],[.66,.58,.35],[.39,.62,.14],[.55,.65,-.3],[.71,.48,.12],[.29,.58,.31]];
+ let q=0;names.forEach((n,ni)=>{for(let j=0;j<Math.min(n==="Картошка фри"?5:4,slots.length);j++){
+   const s=slots[(q+j*2+ni)%slots.length];drawIngredient(c,n,z.w*s[0],z.h*s[1],.62+(j%3)*.08,s[2]+j*.19);
+  }q+=2});
+}
+function animateExtra(name){
+ const visual=$("#sceneExtras .visual");if(!visual)return;
+ const z=ensureFoodCanvases(visual);if(!z||!z.w)return;const m=ctx2(z.m,z.d);
+ triggerFoodCamera(visual);
+ const count=name==="Картошка фри"?7:6,start=performance.now(),dur=900;
+ const pieces=Array.from({length:count},(_,i)=>({
+  x:z.w*(.27+Math.random()*.47),tx:z.w*(.31+Math.random()*.42),ty:z.h*(.47+Math.random()*.18),
+  delay:i*55,rot:(Math.random()-.5)*1.6,spin:(Math.random()-.5)*4.2,scale:.52+Math.random()*.24
+ }));
+ function frame(now){
+  m.clearRect(0,0,z.w,z.h);let alive=false;
+  pieces.forEach(p=>{const raw=(now-start-p.delay)/dur;if(raw<0||raw>1)return;alive=true;
+   const t=Math.min(1,raw),e=1-Math.pow(1-t,3),y=-35+(p.ty+35)*e+Math.sin(t*Math.PI)*(-14),x=p.x+(p.tx-p.x)*e;
+   drawIngredient(m,name,x,y,p.scale,p.rot+p.spin*t);
+  });
+  if(alive||now-start<dur+count*55)requestAnimationFrame(frame);else{
+   m.clearRect(0,0,z.w,z.h);paintStaticExtras(visual,st.extras);
+   visual.classList.add("food-impact");setTimeout(()=>visual.classList.remove("food-impact"),430);
+  }
+ }
+ requestAnimationFrame(frame);
+}
+function repaintCurrentBuilderScene(){
+ const s=document.querySelector(".scene.active");if(!s)return;
+ if(s.id==="sceneSauce")paintStaticSauces(s.querySelector(".visual"),st.sauces);
+ if(s.id==="sceneExtras")paintStaticExtras(s.querySelector(".visual"),st.extras);
+ if(s.id==="sceneReady")paintStaticExtras(s.querySelector(".visual"),st.extras);
+}
+const __oldToggleSauce=toggleSauce;
+toggleSauce=function(n){
+ const adding=!st.sauces.includes(n);
+ __oldToggleSauce(n);
+ if(adding)setTimeout(()=>animateSauce(n),20);
+ else setTimeout(repaintCurrentBuilderScene,20);
+};
+const __oldToggleExtra=toggleExtra;
+toggleExtra=function(n){
+ const adding=!st.extras.includes(n);
+ __oldToggleExtra(n);
+ if(adding)setTimeout(()=>animateExtra(n),20);
+ else setTimeout(repaintCurrentBuilderScene,20);
+};
+const __oldScene=scene;
+scene=function(id){__oldScene(id);setTimeout(repaintCurrentBuilderScene,60)};
+const __oldResetBuilder=resetBuilder;
+resetBuilder=function(){
+ __oldResetBuilder();
+ document.querySelectorAll("canvas.foodFxCanvas").forEach(c=>{const x=c.getContext("2d");x&&x.clearRect(0,0,c.width,c.height)});
+};
+window.addEventListener("resize",()=>setTimeout(repaintCurrentBuilderScene,80));
+
 </script>
 </body></html>
