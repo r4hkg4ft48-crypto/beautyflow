@@ -53,97 +53,49 @@ function writeStore(v){fs.writeFileSync(DATA_FILE,JSON.stringify(v))}
 
 async function initDb(){
  if(!DB)return;
- await DB.query(`
- CREATE TABLE IF NOT EXISTS salons(id SERIAL PRIMARY KEY,city TEXT NOT NULL,name TEXT NOT NULL,district TEXT,rating NUMERIC(2,1),reviews INT DEFAULT 0,price TEXT,image TEXT,promo TEXT,today TEXT,tags JSONB DEFAULT '[]'::jsonb);
- CREATE TABLE IF NOT EXISTS services(id SERIAL PRIMARY KEY,salon_id INT REFERENCES salons(id) ON DELETE CASCADE,name TEXT NOT NULL,category TEXT NOT NULL,price INT NOT NULL,duration INT NOT NULL,emoji TEXT);
- CREATE TABLE IF NOT EXISTS masters(id SERIAL PRIMARY KEY,salon_id INT REFERENCES salons(id) ON DELETE CASCADE,name TEXT NOT NULL,specialty TEXT NOT NULL,experience INT DEFAULT 0,rating NUMERIC(2,1) DEFAULT 5.0);
- CREATE TABLE IF NOT EXISTS bookings(id BIGSERIAL PRIMARY KEY,salon_id INT,service_name TEXT NOT NULL,master_name TEXT,booking_date TEXT NOT NULL,booking_time TEXT NOT NULL,client_name TEXT DEFAULT 'Гость',client_phone TEXT,status TEXT DEFAULT 'confirmed',created_at TIMESTAMPTZ DEFAULT NOW());
- CREATE TABLE IF NOT EXISTS shaurma_orders(
-   id BIGSERIAL PRIMARY KEY,
-   order_number TEXT UNIQUE NOT NULL,
-   items JSONB NOT NULL DEFAULT '[]'::jsonb,
-   total INT NOT NULL DEFAULT 0,
-   customer_name TEXT DEFAULT 'Гость',
-   phone TEXT,
-   address TEXT,
-   comment TEXT,
-   status TEXT NOT NULL DEFAULT 'new',
-   created_at TIMESTAMPTZ DEFAULT NOW(),
-   updated_at TIMESTAMPTZ DEFAULT NOW()
- );
- `);
- const c=await DB.query('SELECT COUNT(*)::int c FROM salons');
- if(c.rows[0].c===0){
-  for(const s of seed.salons) await DB.query('INSERT INTO salons(city,name,district,rating,reviews,price,image,promo,today,tags) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)',[s.city,s.name,s.district,s.rating,s.reviews,s.price,s.image,s.promo,s.today,JSON.stringify(s.tags)]);
-  for(const s of seed.services) await DB.query('INSERT INTO services(salon_id,name,category,price,duration,emoji) VALUES($1,$2,$3,$4,$5,$6)',[s.salon_id,s.name,s.category,s.price,s.duration,s.emoji]);
-  for(const m of seed.masters) await DB.query('INSERT INTO masters(salon_id,name,specialty,experience,rating) VALUES($1,$2,$3,$4,$5)',[m.salon_id,m.name,m.specialty,m.experience,m.rating]);
+
+ // One-time migration from the old BeautyFlow schema to Shaurma City.
+ if(process.env.RESET_TO_SHAURMA==='true'){
+  await DB.query(`
+   DROP TABLE IF EXISTS bookings CASCADE;
+   DROP TABLE IF EXISTS masters CASCADE;
+   DROP TABLE IF EXISTS services CASCADE;
+   DROP TABLE IF EXISTS salons CASCADE;
+   DROP TABLE IF EXISTS shaurma_orders CASCADE;
+  `);
  }
+
+ await DB.query(`
+  CREATE TABLE IF NOT EXISTS shaurma_orders(
+    id BIGSERIAL PRIMARY KEY,
+    order_number TEXT UNIQUE NOT NULL,
+    items JSONB NOT NULL DEFAULT '[]'::jsonb,
+    total INT NOT NULL DEFAULT 0,
+    customer_name TEXT DEFAULT 'Гость',
+    phone TEXT,
+    address TEXT,
+    comment TEXT,
+    status TEXT NOT NULL DEFAULT 'new',
+    source TEXT NOT NULL DEFAULT 'web',
+    telegram_user_id TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+  );
+
+  CREATE INDEX IF NOT EXISTS idx_shaurma_orders_created_at
+    ON shaurma_orders(created_at DESC);
+  CREATE INDEX IF NOT EXISTS idx_shaurma_orders_status
+    ON shaurma_orders(status);
+ `);
 }
 
-app.get('/api/health',(req,res)=>res.json({ok:true,mode:'aggregator',storage:DB?'postgres':'temporary'}));
+app.get('/api/health',(req,res)=>res.json({ok:true,mode:'shaurma-city',storage:DB?'postgres':'temporary'}));
 
-app.get('/api/discover',async(req,res)=>{
- const city=req.query.city||'Москва',q=(req.query.q||'').toLowerCase(),category=req.query.category||'Все';
- try{
-  let salons,services,masters;
-  if(DB){
-   salons=(await DB.query('SELECT * FROM salons WHERE city=$1 ORDER BY rating DESC,reviews DESC',[city])).rows;
-   services=(await DB.query('SELECT * FROM services')).rows;
-   masters=(await DB.query('SELECT * FROM masters')).rows;
-  }else{
-   const d=readStore();salons=d.salons.filter(x=>x.city===city);services=d.services;masters=d.masters;
-  }
-  if(q) salons=salons.filter(s=>s.name.toLowerCase().includes(q)||s.district.toLowerCase().includes(q)||s.tags.join(' ').toLowerCase().includes(q));
-  if(category!=='Все') salons=salons.filter(s=>(s.tags||[]).includes(category));
-  res.json({cities:seed.cities,salons,services,masters});
- }catch(e){res.status(500).json({error:e.message})}
-});
 
-app.get('/api/salons/:id',async(req,res)=>{
- const id=Number(req.params.id);
- try{
-  let salon,services,masters;
-  if(DB){
-   salon=(await DB.query('SELECT * FROM salons WHERE id=$1',[id])).rows[0];
-   services=(await DB.query('SELECT * FROM services WHERE salon_id=$1 ORDER BY id',[id])).rows;
-   masters=(await DB.query('SELECT * FROM masters WHERE salon_id=$1 ORDER BY rating DESC',[id])).rows;
-  }else{
-   const d=readStore();salon=d.salons.find(x=>x.id===id);services=d.services.filter(x=>x.salon_id===id);masters=d.masters.filter(x=>x.salon_id===id);
-  }
-  if(!salon)return res.sendStatus(404);
-  res.json({salon,services,masters});
- }catch(e){res.status(500).json({error:e.message})}
-});
 
-app.get('/api/bookings',async(req,res)=>{
- try{if(DB){return res.json((await DB.query('SELECT * FROM bookings ORDER BY created_at DESC')).rows)}
- const d=readStore();res.json(d.bookings.slice().reverse())}catch(e){res.status(500).json({error:e.message})}
-});
 
-app.post('/api/bookings',async(req,res)=>{
- const {salon_id,service_name,master_name,booking_date,booking_time,client_name,client_phone}=req.body||{};
- if(!service_name||!booking_date||!booking_time)return res.status(400).json({error:'missing_fields'});
- try{
-  if(DB){const q=await DB.query('INSERT INTO bookings(salon_id,service_name,master_name,booking_date,booking_time,client_name,client_phone) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *',[salon_id||null,service_name,master_name||null,booking_date,booking_time,client_name||'Гость',client_phone||null]);return res.status(201).json(q.rows[0])}
-  const d=readStore();const item={id:Date.now(),salon_id:salon_id||null,service_name,master_name:master_name||null,booking_date,booking_time,client_name:client_name||'Гость',client_phone:client_phone||null,status:'confirmed',created_at:new Date().toISOString()};d.bookings.push(item);writeStore(d);res.status(201).json(item);
- }catch(e){res.status(500).json({error:e.message})}
-});
 
-app.patch('/api/bookings/:id',async(req,res)=>{
- const {status,booking_date,booking_time}=req.body||{};const id=req.params.id;
- try{
-  if(DB){const q=await DB.query('UPDATE bookings SET status=COALESCE($1,status),booking_date=COALESCE($2,booking_date),booking_time=COALESCE($3,booking_time) WHERE id=$4 RETURNING *',[status||null,booking_date||null,booking_time||null,id]);return q.rows[0]?res.json(q.rows[0]):res.sendStatus(404)}
-  const d=readStore(),x=d.bookings.find(v=>String(v.id)===String(id));if(!x)return res.sendStatus(404);if(status)x.status=status;if(booking_date)x.booking_date=booking_date;if(booking_time)x.booking_time=booking_time;writeStore(d);res.json(x);
- }catch(e){res.status(500).json({error:e.message})}
-});
 
-app.get('/api/admin/stats',async(req,res)=>{
- try{
-  const bookings=DB?(await DB.query('SELECT * FROM bookings')).rows:readStore().bookings;
-  const active=bookings.filter(x=>x.status!=='cancelled');
-  res.json({bookings:bookings.length,active:active.length,cancelled:bookings.length-active.length,revenue:active.length*3200,salons:DB?(await DB.query('SELECT COUNT(*)::int c FROM salons')).rows[0].c:readStore().salons.length});
- }catch(e){res.status(500).json({error:e.message})}
-});
 
 
 const ownerClients=new Set();
@@ -239,4 +191,4 @@ app.get('/shaurma-owner',(req,res)=>res.sendFile(path.join(__dirname,'shaurma-ow
 app.get('/admin',(req,res)=>res.sendFile(path.join(__dirname,'admin.html')));
 app.use((req,res)=>res.sendFile(path.join(__dirname,'index.html')));
 
-initDb().catch(e=>console.error('DB init:',e.message)).finally(()=>app.listen(PORT,()=>console.log('BeautyFlow aggregator on '+PORT)));
+initDb().catch(e=>console.error('DB init:',e.message)).finally(()=>app.listen(PORT,()=>console.log('Shaurma City API on '+PORT)));
