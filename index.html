@@ -23,11 +23,49 @@
 .controls{margin-top:12px}.panel{display:none}.panel.active{display:block;animation:up .35s ease}.orbs{display:flex;gap:9px;overflow:auto;scrollbar-width:none}.orb{white-space:nowrap;min-width:132px;padding:11px 13px;border-radius:999px;border:1px solid var(--l);background:rgba(255,255,255,.03);display:flex;align-items:center;gap:8px}.orb:before{content:"";width:11px;height:11px;border-radius:50%;background:var(--tone);box-shadow:0 0 15px var(--tone)}.orb.selected{border-color:var(--tone);box-shadow:0 0 0 1px color-mix(in srgb,var(--tone) 30%,transparent) inset}.mods{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.mod{padding:14px;border-radius:20px;border:1px solid var(--l);background:rgba(255,255,255,.03);text-align:left}.mod.selected{border-color:rgba(98,221,255,.38);box-shadow:0 0 0 1px rgba(98,221,255,.12) inset}.mod b{display:block}.mod small{color:var(--m)}.sum{padding:15px;border-radius:22px;background:rgba(255,255,255,.03);border:1px solid var(--l)}.sum h4{font-size:23px;margin:0 0 8px}.chips{display:flex;gap:7px;flex-wrap:wrap}.chip2{padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid var(--l);font-size:11px;font-weight:800}.meta{display:grid;gap:8px;margin-top:12px}.meta div{display:flex;justify-content:space-between;color:var(--m)}.meta b{color:var(--t)}.bactions{display:flex;gap:9px;margin-top:13px}.bactions .pri{flex:1}.ghost{border:1px solid var(--l);background:rgba(255,255,255,.03);border-radius:17px;padding:13px 15px;font-weight:800}.toast{position:fixed;z-index:100;left:50%;bottom:calc(96px + var(--sb));transform:translate(-50%,20px);opacity:0;transition:.2s;padding:11px 14px;border-radius:14px;background:#0a1322;border:1px solid rgba(98,221,255,.25)}.toast.show{opacity:1;transform:translate(-50%,0)}
 @keyframes flow{50%{translate:2% -2px}}@keyframes flyin{from{opacity:0;transform:translate(-50%,-50%) scale(.2)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}@keyframes float{50%{translate:0 -6px}}@keyframes spark{to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.3)}}@keyframes up{from{opacity:0;transform:translateY(10px)}} 
 @media(max-width:820px){.hero,.showcase{grid-template-columns:1fr}.foodhero{min-height:420px}.grid{grid-template-columns:repeat(2,1fr)}.astage{grid-template-columns:1fr}.center{min-height:82px;order:-1}.side{min-height:260px}.mods{grid-template-columns:repeat(2,1fr)}}@media(max-width:540px){.hero{padding:18px 13px 10px}.hero h1{font-size:40px}.cats{padding:5px 13px 16px;grid-template-columns:repeat(2,1fr)}.section{padding:0 13px 16px}.grid{grid-template-columns:1fr}.pic{height:190px}.mods{grid-template-columns:1fr 1fr}}
+
+/* BUILD 9 — cinematic paged builder */
+.builder .bmodal{overflow:hidden;display:flex;flex-direction:column;height:min(860px,calc(100dvh - 8px))}
+.bhead,.caption,.bactions{flex:0 0 auto}.scene-wrap{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:28px}
+.bscene{position:absolute;inset:0;opacity:0;pointer-events:none;transform:translateX(10%) scale(.985);transition:opacity .42s ease,transform .5s cubic-bezier(.2,.85,.25,1);overflow:auto;padding:2px}
+.bscene.active{opacity:1;pointer-events:auto;transform:none}.bscene.exit-left{transform:translateX(-10%) scale(.985)}
+.select-hint{display:flex;align-items:center;justify-content:center;gap:9px;margin:10px auto 0;padding:10px 14px;width:max-content;max-width:100%;border-radius:999px;background:rgba(98,221,255,.08);border:1px solid rgba(98,221,255,.2);color:#dff8ff;font-size:12px;font-weight:800;letter-spacing:.03em;animation:hintPulse 1.8s ease-in-out infinite}
+.select-hint i{width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 14px var(--c)}
+.type-battle{position:relative;min-height:100%;display:grid;grid-template-columns:1fr 96px 1fr;gap:10px;padding:12px;border-radius:28px;background:linear-gradient(135deg,#07101b,#10192b);border:1px solid var(--l);overflow:hidden}
+.type-battle:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 0,rgba(98,221,255,.12),transparent 25%),radial-gradient(circle at 80% 0,rgba(133,114,255,.16),transparent 28%);pointer-events:none}
+.type-card{position:relative;min-height:390px;border:1px solid rgba(255,255,255,.07);border-radius:24px;overflow:hidden;background:#08111c;opacity:.7;transform:scale(.985);transition:.25s;z-index:2}
+.type-card img{width:100%;height:100%;object-fit:cover}.type-card:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(4,8,15,.92))}
+.type-card.selected{opacity:1;transform:scale(1.012);border-color:rgba(98,221,255,.45);box-shadow:0 18px 42px rgba(98,221,255,.12)}
+.type-card.armed:before{content:"";position:absolute;inset:8px;border:1px solid rgba(98,221,255,.45);border-radius:18px;z-index:5;animation:armedRing 1.2s ease-in-out infinite}
+.type-copy{position:absolute;z-index:6;left:14px;right:14px;bottom:14px}.type-copy b{display:block;font-size:28px;line-height:.95}.type-copy small{display:block;color:#d5deef;margin-top:5px}
+.confirm-bubble{position:absolute;z-index:7;left:50%;bottom:82px;transform:translateX(-50%) translateY(8px);opacity:0;padding:9px 12px;border-radius:999px;background:rgba(5,9,16,.82);border:1px solid rgba(98,221,255,.28);white-space:nowrap;font-size:11px;font-weight:850;transition:.2s}
+.type-card.armed .confirm-bubble{opacity:1;transform:translateX(-50%)}
+.battle-center{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:3}.battle-center .vst{position:relative}.battle-center .vst:after{content:"";position:absolute;inset:-18px;border-radius:50%;border:1px solid rgba(98,221,255,.2);animation:ringPulse 2s ease-in-out infinite}
+.scene-hero{position:relative;min-height:250px;border-radius:26px;overflow:hidden;border:1px solid var(--l);background:#08111c;margin-bottom:12px}
+.scene-hero img{width:100%;height:100%;object-fit:cover;display:block}.scene-hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,8,14,.08),rgba(5,8,14,.86)),radial-gradient(circle at 50% 20%,rgba(98,221,255,.08),transparent 35%)}
+.scene-title{position:absolute;z-index:3;left:16px;right:16px;bottom:16px}.scene-title small{display:block;color:var(--c);text-transform:uppercase;letter-spacing:.14em;font-size:10px;font-weight:850}.scene-title b{font-size:28px;display:block;margin-top:3px}
+.sauce-stage,.extras-stage{min-height:100%;padding:12px;border-radius:28px;background:linear-gradient(135deg,#07101b,#10192b);border:1px solid var(--l)}
+.sauce-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.sauce-tile{position:relative;min-height:112px;padding:15px;border-radius:22px;border:1px solid var(--l);background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));overflow:hidden;text-align:left}
+.sauce-tile:before{content:"";position:absolute;width:110px;height:110px;border-radius:50%;right:-35px;top:-38px;background:radial-gradient(circle,var(--tone),transparent 68%);opacity:.22;filter:blur(4px)}
+.sauce-tile.selected{border-color:var(--tone);box-shadow:0 0 0 1px color-mix(in srgb,var(--tone) 35%,transparent) inset,0 14px 34px color-mix(in srgb,var(--tone) 15%,transparent)}
+.sauce-tile .drop{width:34px;height:34px;border-radius:50% 50% 55% 45%/60% 55% 45% 40%;transform:rotate(45deg);background:var(--tone);box-shadow:0 0 20px color-mix(in srgb,var(--tone) 70%,transparent);margin-bottom:10px}
+.sauce-tile b,.extra-tile b{display:block;font-size:17px}.sauce-tile small,.extra-tile small{color:var(--m);display:block;margin-top:3px}
+.sauce-splash{position:absolute;z-index:4;inset:0;pointer-events:none}.splash-line{position:absolute;left:14%;right:14%;height:18px;border-radius:999px;background:var(--tone);filter:drop-shadow(0 0 12px var(--tone));opacity:0;transform:translateX(-55%) rotate(-8deg)}
+.scene-hero.sauced .splash-line{animation:sauceSweep .9s cubic-bezier(.2,.8,.25,1) forwards}.splash-line:nth-child(2){top:48%;animation-delay:.1s!important}.splash-line:nth-child(3){top:62%;animation-delay:.2s!important}.splash-line:nth-child(1){top:34%}
+.extras-grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.extra-tile{position:relative;min-height:118px;padding:15px;border-radius:22px;border:1px solid var(--l);background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));text-align:left;overflow:hidden}.extra-tile.selected{border-color:rgba(98,221,255,.42);box-shadow:0 0 0 1px rgba(98,221,255,.15) inset,0 14px 30px rgba(98,221,255,.08)}
+.extra-tile .plusmark{position:absolute;right:12px;top:12px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.04);border:1px solid var(--l);font-size:18px}.extra-tile.selected .plusmark{background:linear-gradient(135deg,var(--c),var(--v));color:#06131d}
+.ingredient-fly{position:absolute;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%) scale(.3);padding:9px 11px;border-radius:999px;background:rgba(5,9,16,.86);border:1px solid rgba(255,255,255,.12);font-size:11px;font-weight:850;animation:ingredientLand .75s cubic-bezier(.2,.85,.25,1) forwards}
+.ready-stage{min-height:100%;padding:12px;border-radius:28px;background:linear-gradient(135deg,#07101b,#10192b);border:1px solid var(--l)}
+.scene-nav-note{margin-top:10px;text-align:center;color:var(--m);font-size:11px}
+@keyframes hintPulse{50%{box-shadow:0 0 24px rgba(98,221,255,.12);transform:translateY(-2px)}}@keyframes armedRing{50%{box-shadow:0 0 28px rgba(98,221,255,.16)}}@keyframes ringPulse{50%{transform:scale(1.08);opacity:.35}}@keyframes sauceSweep{0%{opacity:0;transform:translateX(-65%) rotate(-8deg) scaleX(.3)}55%{opacity:.95}100%{opacity:.78;transform:translateX(0) rotate(-8deg) scaleX(1)}}@keyframes ingredientLand{0%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(.25) rotate(-16deg)}65%{opacity:1;transform:translate(-50%,-50%) scale(1.08) rotate(2deg)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@media(max-width:820px){.type-battle{grid-template-columns:1fr;min-height:auto}.battle-center{min-height:78px;order:-1}.type-card{min-height:240px}.sauce-grid,.extras-grid2{grid-template-columns:1fr 1fr}}
+@media(max-width:540px){.builder .bmodal{height:calc(100dvh - 4px)}.type-card{min-height:220px}.sauce-grid,.extras-grid2{grid-template-columns:1fr 1fr}.scene-hero{min-height:210px}.confirm-bubble{bottom:70px}}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="loc"><b>Москва</b><small>Доставка · 25 минут</small></div><div class="brand"><b>SHAURMA <i>CITY</i></b><small>FOOD SYSTEM</small></div><div class="build">BUILD 8</div></header>
+<header class="top"><div class="loc"><b>Москва</b><small>Доставка · 25 минут</small></div><div class="brand"><b>SHAURMA <i>CITY</i></b><small>FOOD SYSTEM</small></div><div class="build">BUILD 9</div></header>
 <section class="hero" id="home"><div><div class="k">Future street food</div><h1><span>Шаурма</span><br>как цифровой<br>продукт.</h1><p>Новый конструктор теперь работает по-настоящему: формат → соус → добавки → корзина. На каждом этапе сборка меняется прямо в кадре.</p><div class="actions"><button class="pri" data-go="#menu">Смотреть меню</button><button class="sec" id="heroBuilder">Собрать свою</button></div></div><div class="foodhero"><img src="https://static.insales-cdn.com/images/collections/1/6249/96434281/01e9ad2bbd411f098ab164668478d73_1.jpeg" alt="Шаурма"><div class="chip"><b>Signature / Real Food</b><br><small style="color:var(--m)">Классика · сырная · лепёшка</small></div></div></section>
 <section class="cats"><button class="cat active" data-filter="shawarma"><b>Шаурма</b><small>Классика и сырная</small></button><button class="cat" data-filter="flatbread"><b>Лепёшка</b><small>Фирменный формат</small></button><button class="cat" data-filter="extras"><b>Допы</b><small>Фри, сыр, лук, халапеньо</small></button><button class="cat" data-filter="drinks"><b>Напитки</b><small>Кола, компот, морс, сок</small></button></section>
 <section class="section" id="builderPreview"><div class="showcase"><div><div class="k">Конструктор вкуса</div><h2>Шаурма <span>VS</span> Лепёшка</h2><p>Сначала выбери формат. Затем соус визуально «прольётся» на продукт, а добавки влетят в кадр и останутся в сборке.</p><div class="actions"><button class="pri" id="openBuilder">Открыть конструктор</button><button class="sec" data-go="#menu">Перейти в меню</button></div></div><div class="vs"><div class="h l"><img src="https://static.insales-cdn.com/images/collections/1/6249/96434281/01e9ad2bbd411f098ab164668478d73_1.jpeg"></div><div class="h r"><img src="https://img0.didiglobal.com/static/soda_public/img_4cd2870eb163734e09c50514150c7a05.jpg"></div><div class="badge">VS</div><div class="lab l">Шаурма</div><div class="lab r">Лепёшка</div></div></div></section>
@@ -37,44 +75,292 @@
 
 <div class="back" id="cartBack"></div><div class="sheet" id="cartSheet"><div class="sheetin"><div class="shead"><div><div class="k">Твой заказ</div><h3>Корзина</h3></div><button class="x" id="cartClose">×</button></div><div class="items" id="cartItems"></div><div class="total"><span>Итого</span><b id="cartTotal">0 ₽</b></div><button class="pri wide" id="checkout">Оформить заказ</button></div></div>
 
-<div class="back" id="builderBack"></div><div class="builder" id="builder"><div class="bmodal"><div class="bhead"><div><div class="k">Конструктор вкуса</div><h3 id="btitle">Шаурма vs Лепёшка</h3></div><button class="x" id="bclose">×</button></div><div class="caption"><b id="ctitle">Выбери формат</b><small id="ctext">Нажми на шаурму или лепёшку — выбранная сторона выйдет вперёд, после чего откроется этап соусов.</small></div><div class="arena"><div class="astage"><button class="side selected" id="left" data-type="Шаурма"><img src="https://static.insales-cdn.com/images/collections/1/6249/96434281/01e9ad2bbd411f098ab164668478d73_1.jpeg"><div class="layer sauce"><i class="ribbon r1"></i><i class="ribbon r2"></i><i class="ribbon r3"></i></div><div class="layer" id="leftExtras"></div><div class="layer" id="leftSparks"></div><div class="slab"><b>Шаурма</b><small>Классическая сборка</small></div></button><div class="center"><div class="vst">VS</div><div class="status"><b id="step">ФОРМАТ</b><small id="hint">Выбери победителя</small></div></div><button class="side" id="right" data-type="Лепёшка"><img src="https://img0.didiglobal.com/static/soda_public/img_4cd2870eb163734e09c50514150c7a05.jpg"><div class="layer sauce"><i class="ribbon r1"></i><i class="ribbon r2"></i><i class="ribbon r3"></i></div><div class="layer" id="rightExtras"></div><div class="layer" id="rightSparks"></div><div class="slab"><b>Лепёшка</b><small>Фирменная открытая сборка</small></div></button></div></div><div class="controls"><div class="panel active" id="ptype"></div><div class="panel" id="psauce"><div class="orbs" id="orbs"></div></div><div class="panel" id="pextras"><div class="mods" id="mods"></div></div><div class="panel" id="pready"><div class="sum"><h4 id="sumName"></h4><div class="chips" id="chips"></div><div class="meta"><div><span>Формат</span><b id="sumType"></b></div><div><span>Соус</span><b id="sumSauce"></b></div><div><span>Добавки</span><b id="sumExtras"></b></div><div><span>Итого</span><b id="sumPrice"></b></div></div></div></div></div><div class="bactions"><button class="ghost" id="bprev">Назад</button><button class="pri" id="bnext">Выбери формат</button></div></div></div>
+<div class="back" id="builderBack"></div>
+<div class="builder" id="builder">
+  <div class="bmodal">
+    <div class="bhead">
+      <div><div class="k">Конструктор вкуса</div><h3 id="btitle">Шаурма vs Лепёшка</h3></div>
+      <button class="x" id="bclose">×</button>
+    </div>
+    <div class="caption"><b id="ctitle">Выбери формат</b><small id="ctext">Первый тап — выделить. Второй тап по тому же варианту — подтвердить выбор.</small></div>
+
+    <div class="scene-wrap">
+      <section class="bscene active" id="sceneType">
+        <div class="type-battle">
+          <button class="type-card" id="typeShawarma" data-type="Шаурма">
+            <img src="https://static.insales-cdn.com/images/collections/1/6249/96434281/01e9ad2bbd411f098ab164668478d73_1.jpeg">
+            <div class="confirm-bubble">Коснись ещё раз → выбрать</div>
+            <div class="type-copy"><b>Шаурма</b><small>Классическая сочная сборка</small></div>
+          </button>
+          <div class="battle-center"><div class="vst">VS</div><div class="status"><b>ДВОЙНОЙ ТАП</b><small>выдели → подтверди</small></div></div>
+          <button class="type-card" id="typeFlatbread" data-type="Лепёшка">
+            <img src="https://img0.didiglobal.com/static/soda_public/img_4cd2870eb163734e09c50514150c7a05.jpg">
+            <div class="confirm-bubble">Коснись ещё раз → выбрать</div>
+            <div class="type-copy"><b>Лепёшка</b><small>Фирменная открытая сборка</small></div>
+          </button>
+        </div>
+        <div class="select-hint"><i></i> Первый тап выделяет · второй подтверждает</div>
+      </section>
+
+      <section class="bscene" id="sceneSauce">
+        <div class="sauce-stage">
+          <div class="scene-hero" id="sauceHero">
+            <img id="sauceHeroImg" src="" alt="">
+            <div class="sauce-splash"><i class="splash-line"></i><i class="splash-line"></i><i class="splash-line"></i></div>
+            <div class="scene-title"><small>Этап 02 · Соус</small><b id="sauceHeroTitle">Выбери соус</b></div>
+          </div>
+          <div class="sauce-grid" id="sauceGrid"></div>
+          <div class="scene-nav-note">Выбери один соус — он сразу появится на твоей сборке</div>
+        </div>
+      </section>
+
+      <section class="bscene" id="sceneExtras">
+        <div class="extras-stage">
+          <div class="scene-hero" id="extrasHero">
+            <img id="extrasHeroImg" src="" alt="">
+            <div class="sauce-splash" id="extrasSauceLayer"><i class="splash-line"></i><i class="splash-line"></i><i class="splash-line"></i></div>
+            <div id="ingredientLayer"></div>
+            <div class="scene-title"><small>Этап 03 · Добавки</small><b>Собери характер</b></div>
+          </div>
+          <div class="extras-grid2" id="extrasGrid"></div>
+          <div class="scene-nav-note">Можно выбрать несколько добавок</div>
+        </div>
+      </section>
+
+      <section class="bscene" id="sceneReady">
+        <div class="ready-stage">
+          <div class="scene-hero" id="readyHero">
+            <img id="readyHeroImg" src="" alt="">
+            <div class="sauce-splash" id="readySauceLayer"><i class="splash-line"></i><i class="splash-line"></i><i class="splash-line"></i></div>
+            <div id="readyIngredientLayer"></div>
+            <div class="scene-title"><small>Этап 04 · Готово</small><b>Твоя сборка</b></div>
+          </div>
+          <div class="sum">
+            <h4 id="sumName"></h4>
+            <div class="chips" id="chips"></div>
+            <div class="meta">
+              <div><span>Формат</span><b id="sumType"></b></div>
+              <div><span>Соус</span><b id="sumSauce"></b></div>
+              <div><span>Добавки</span><b id="sumExtras"></b></div>
+              <div><span>Итого</span><b id="sumPrice"></b></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="bactions">
+      <button class="ghost" id="bprev">Назад</button>
+      <button class="pri" id="bnext">Выбери формат</button>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
-const IMG1="https://static.insales-cdn.com/images/collections/1/6249/96434281/01e9ad2bbd411f098ab164668478d73_1.jpeg",IMG2="https://img0.didiglobal.com/static/soda_public/img_4cd2870eb163734e09c50514150c7a05.jpg";
+const IMG1="https://static.insales-cdn.com/images/collections/1/6249/96434281/01e9ad2bbd411f098ab164668478d73_1.jpeg";
+const IMG2="https://img0.didiglobal.com/static/soda_public/img_4cd2870eb163734e09c50514150c7a05.jpg";
 const P=[
 {id:"classic",n:"Шаурма классика",c:"shawarma",d:"Курица, овощи, фирменный соус",p:280,i:IMG1,l:"Хит"},
 {id:"cheese",n:"Шаурма сырная",c:"shawarma",d:"Курица, сыр, овощи, фирменный соус",p:null,i:IMG1,l:"Сырная"},
 {id:"flat",n:"Лепёшка",c:"flatbread",d:"Шаурма в горячей лепёшке",p:270,i:IMG2,l:"Фирменная"},
-{id:"big",n:"Биг Тейсти",c:"sauces",d:"Дополнительный соус",p:null},{id:"bbq",n:"Барбекю",c:"sauces",d:"Копчёный соус",p:null},{id:"gran",n:"Гранатовый",c:"sauces",d:"Кисло-сладкий соус",p:null},{id:"cs",n:"Сырный",c:"sauces",d:"Насыщенный сырный соус",p:null},{id:"gar",n:"Чесночный",c:"sauces",d:"Классический чесночный",p:null},
-{id:"fries",n:"Картошка фри",c:"extras",d:"Добавить внутрь",p:null},{id:"jal",n:"Халапеньо",c:"extras",d:"Добавить остроты",p:null},{id:"on",n:"Лук",c:"extras",d:"Бесплатно",p:0},{id:"ce",n:"Сыр",c:"extras",d:"Добавить сыр",p:null},
-{id:"cola",n:"Кока-Кола",c:"drinks",d:"Холодный напиток",p:null},{id:"kom",n:"Компот",c:"drinks",d:"Домашний компот",p:null},{id:"mors",n:"Морс",c:"drinks",d:"Ягодный морс",p:null},{id:"juice",n:"Сок",c:"drinks",d:"Сок",p:null},
-{id:"sc",n:"Самса курица",c:"bakery",d:"Сочная начинка из курицы",p:null},{id:"sb",n:"Самса говядина",c:"bakery",d:"Сочная говядина",p:null},{id:"bel",n:"Беляш",c:"bakery",d:"Горячая выпечка с мясом",p:null},{id:"cheb",n:"Чебурек",c:"bakery",d:"Хрустящий чебурек",p:null}
+{id:"big",n:"Биг Тейсти",c:"sauces",d:"Дополнительный соус",p:null},
+{id:"bbq",n:"Барбекю",c:"sauces",d:"Копчёный соус",p:null},
+{id:"gran",n:"Гранатовый",c:"sauces",d:"Кисло-сладкий соус",p:null},
+{id:"cs",n:"Сырный",c:"sauces",d:"Насыщенный сырный соус",p:null},
+{id:"gar",n:"Чесночный",c:"sauces",d:"Классический чесночный",p:null},
+{id:"fries",n:"Картошка фри",c:"extras",d:"Добавить внутрь",p:null},
+{id:"jal",n:"Халапеньо",c:"extras",d:"Добавить остроты",p:null},
+{id:"on",n:"Лук",c:"extras",d:"Бесплатно",p:0},
+{id:"ce",n:"Сыр",c:"extras",d:"Добавить сыр",p:null},
+{id:"cola",n:"Кока-Кола",c:"drinks",d:"Холодный напиток",p:null},
+{id:"kom",n:"Компот",c:"drinks",d:"Домашний компот",p:null},
+{id:"mors",n:"Морс",c:"drinks",d:"Ягодный морс",p:null},
+{id:"juice",n:"Сок",c:"drinks",d:"Сок",p:null},
+{id:"sc",n:"Самса курица",c:"bakery",d:"Сочная начинка из курицы",p:null},
+{id:"sb",n:"Самса говядина",c:"bakery",d:"Сочная говядина",p:null},
+{id:"bel",n:"Беляш",c:"bakery",d:"Горячая выпечка с мясом",p:null},
+{id:"cheb",n:"Чебурек",c:"bakery",d:"Хрустящий чебурек",p:null}
 ];
-const TIT={shawarma:"Шаурма",flatbread:"Лепёшка",sauces:"Соусы",extras:"Допы",drinks:"Напитки",bakery:"Выпечка"},SA=[["Биг Тейсти","#f7e3be"],["Барбекю","#ff925c"],["Гранатовый","#ff5b6a"],["Сырный","#ffd15f"],["Чесночный","#f3f7ff"]],EX=["Картошка фри","Халапеньо","Лук","Сыр"];
+const TIT={shawarma:"Шаурма",flatbread:"Лепёшка",sauces:"Соусы",extras:"Допы",drinks:"Напитки",bakery:"Выпечка"};
+const SA=[
+{name:"Биг Тейсти",tone:"#f7e3be",desc:"Сливочный фирменный вкус"},
+{name:"Барбекю",tone:"#ff925c",desc:"Копчёный и насыщенный"},
+{name:"Гранатовый",tone:"#ff5b6a",desc:"Кисло-сладкий акцент"},
+{name:"Сырный",tone:"#ffd15f",desc:"Плотный сырный вкус"},
+{name:"Чесночный",tone:"#f3f7ff",desc:"Классика для шаурмы"}
+];
+const EX=[
+{name:"Картошка фри",desc:"Хруст внутри"},
+{name:"Халапеньо",desc:"Острый акцент"},
+{name:"Лук",desc:"Бесплатно"},
+{name:"Сыр",desc:"Больше сыра"}
+];
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-let filter="shawarma",cart=[],st={type:null,sauce:null,extras:[]},phase="type";const phases=["type","sauce","extras","ready"];
+let filter="shawarma",cart=[];
+let st={type:null,sauce:null,extras:[]};
+let phase="type";
+let armedType=null;
+
 function money(p){return p===null?"Цена на точке":p+" ₽"}
-function render(){const arr=P.filter(x=>!filter||x.c===filter);$("#grid").innerHTML=arr.map(x=>`<article class="card"><div class="pic">${x.i?'<img src="'+x.i+'">':''}${x.l?'<span class="label">'+x.l+'</span>':''}</div><div class="body"><h3>${x.n}</h3><p>${x.d}</p><div class="row">${x.p===null?'<span class="pending">Цена на точке</span>':'<span class="price">'+money(x.p)+'</span>'}<button class="add" data-add="${x.id}">+</button></div></div></article>`).join("")}
+function render(){
+  const arr=P.filter(x=>!filter||x.c===filter);
+  $("#grid").innerHTML=arr.map(x=>`<article class="card"><div class="pic">${x.i?'<img src="'+x.i+'">':''}${x.l?'<span class="label">'+x.l+'</span>':''}</div><div class="body"><h3>${x.n}</h3><p>${x.d}</p><div class="row">${x.p===null?'<span class="pending">Цена на точке</span>':'<span class="price">'+money(x.p)+'</span>'}<button class="add" data-add="${x.id}">+</button></div></div></article>`).join("");
+}
 function setFilter(c){filter=c;$("#menuTitle").textContent=TIT[c]||"Всё меню";$$("[data-filter]").forEach(x=>x.classList.toggle("active",x.dataset.filter===c));render()}
-function toast(t){$("#toast").textContent=t;$("#toast").classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>$("#toast").classList.remove("show"),1300)}
+function toast(t){$("#toast").textContent=t;$("#toast").classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>$("#toast").classList.remove("show"),1400)}
 function add(id){const p=P.find(x=>x.id===id),e=cart.find(x=>x.id===id&&!x.builder);e?e.q++:cart.push({id:p.id,n:p.n,p:p.p,q:1});cartRender();toast("Добавлено в корзину")}
-function cartRender(){let count=cart.reduce((s,x)=>s+x.q,0);$("#dot").textContent=count;$("#dot").style.display=count?"grid":"none";$("#cartItems").innerHTML=cart.length?cart.map((x,i)=>`<div class="ci"><div><b>${x.n}</b><small>${x.detail||money(x.p)}</small></div><div class="qty"><button data-act="-" data-i="${i}">−</button><b>${x.q}</b><button data-act="+" data-i="${i}">+</button></div><button class="rm" data-act="x" data-i="${i}">Удалить</button></div>`).join(""):'<div class="card" style="padding:16px;color:var(--m)">Корзина пока пустая.</div>';let total=cart.reduce((s,x)=>s+(typeof x.p==="number"?x.p*x.q:0),0),u=cart.some(x=>x.p===null);$("#cartTotal").textContent=total+" ₽"+(u?" + без цены":"")}
-function openCart(){cartRender();$("#cartBack").classList.add("open");$("#cartSheet").classList.add("open");document.body.style.overflow="hidden"}function closeCart(){$("#cartBack").classList.remove("open");$("#cartSheet").classList.remove("open");document.body.style.overflow=""}
-function openBuilder(){resetBuilder();$("#builderBack").classList.add("open");$("#builder").classList.add("open");document.body.style.overflow="hidden"}function closeBuilder(){$("#builderBack").classList.remove("open");$("#builder").classList.remove("open");document.body.style.overflow=""}
-function resetBuilder(){st={type:null,sauce:null,extras:[]};phase="type";sync()}
-function side(){return st.type==="Лепёшка"?$("#right"):$("#left")}function extrasHost(){return st.type==="Лепёшка"?$("#rightExtras"):$("#leftExtras")}function sparksHost(){return st.type==="Лепёшка"?$("#rightSparks"):$("#leftSparks")}
-function burst(color="var(--c)"){let h=sparksHost();if(!h)return;for(let i=0;i<10;i++){let s=document.createElement("i");s.className="spark";s.style.left=45+Math.random()*12+"%";s.style.top=35+Math.random()*18+"%";s.style.setProperty("--sp",color);s.style.setProperty("--dx",(Math.random()-.5)*140+"px");s.style.setProperty("--dy",(Math.random()-.5)*140+"px");h.appendChild(s);setTimeout(()=>s.remove(),900)}}
-function sync(){["type","sauce","extras","ready"].forEach(x=>$("#p"+x).classList.toggle("active",phase===x));$("#left").classList.toggle("selected",st.type==="Шаурма"||!st.type);$("#right").classList.toggle("selected",st.type==="Лепёшка");$$(".side").forEach(x=>{x.classList.remove("sauced");x.style.removeProperty("--sc")});if(st.type&&st.sauce){let s=side(),tone=(SA.find(x=>x[0]===st.sauce)||SA[0])[1];s.classList.add("sauced");s.style.setProperty("--sc",tone)}renderExtras();renderControls();renderSummary();const meta={type:["Шаурма vs Лепёшка","Выбери формат","Нажми на продукт — выбор сработает сразу и автоматически откроет соусы.","ФОРМАТ","Выбери победителя",st.type?"К соусам":"Выбери формат"],sauce:["Добавь соус","Соус — прямо в кадре","Нажми на вкус: соус анимированно прольётся на выбранную шаурму.","СОУС","Выбранный вкус сразу виден","К добавкам"],extras:["Добавки влетают в сборку","Финальный характер","Каждая добавка появляется прямо внутри кадра и остаётся в итоговой сборке.","ДОБАВКИ","Собери свой характер","Готово"],ready:["Сборка готова","Проверь итог","Все параметры сохранены. Теперь добавь собранный продукт в корзину.","ГОТОВО","Сборка завершена","Добавить в корзину"]}[phase];$("#btitle").textContent=meta[0];$("#ctitle").textContent=meta[1];$("#ctext").textContent=meta[2];$("#step").textContent=meta[3];$("#hint").textContent=meta[4];$("#bnext").textContent=meta[5];$("#bprev").style.visibility=phase==="type"?"hidden":"visible"}
-function renderControls(){$("#orbs").innerHTML=SA.map(([n,t])=>`<button class="orb ${st.sauce===n?"selected":""}" data-sauce="${n}" style="--tone:${t}">${n}</button>`).join("");$("#mods").innerHTML=EX.map(n=>`<button class="mod ${st.extras.includes(n)?"selected":""}" data-extra="${n}"><b>${n}</b><small>${n==="Лук"?"Бесплатно":n==="Халапеньо"?"Острый акцент":n==="Картошка фри"?"Хруст внутри":"Больше сыра"}</small></button>`).join("")}
-function renderExtras(){$("#leftExtras").innerHTML="";$("#rightExtras").innerHTML="";if(!st.type)return;let pos=[[28,26],[70,28],[33,64],[69,66]],h=extrasHost();st.extras.forEach((n,i)=>h.insertAdjacentHTML("beforeend",`<span class="extra" style="--x:${pos[i%4][0]}%;--y:${pos[i%4][1]}%">${n}</span>`))}
-function renderSummary(){let price=st.type==="Лепёшка"?320:330;$("#sumName").textContent=(st.type||"Шаурма")+" · сборка";$("#sumType").textContent=st.type||"—";$("#sumSauce").textContent=st.sauce||"—";$("#sumExtras").textContent=st.extras.length?st.extras.join(", "):"Без добавок";$("#sumPrice").textContent=price+" ₽";$("#chips").innerHTML=[st.type&&"Формат: "+st.type,st.sauce&&"Соус: "+st.sauce,...st.extras].filter(Boolean).map(x=>'<span class="chip2">'+x+"</span>").join("")}
-function chooseType(t){st.type=t;burst("rgba(133,114,255,.9)");sync();setTimeout(()=>{phase="sauce";sync()},420)}
-function chooseSauce(n){st.sauce=n;sync();burst((SA.find(x=>x[0]===n)||SA[0])[1])}
-function toggleExtra(n){let i=st.extras.indexOf(n);i>=0?st.extras.splice(i,1):st.extras.push(n);sync();burst("rgba(98,221,255,.9)")}
-function next(){if(phase==="type"){if(!st.type){toast("Сначала выбери шаурму или лепёшку");return}phase="sauce"}else if(phase==="sauce"){if(!st.sauce){toast("Выбери соус");return}phase="extras"}else if(phase==="extras"){phase="ready"}else{let price=st.type==="Лепёшка"?320:330;cart.push({id:"custom"+Date.now(),builder:true,n:st.type+" · своя сборка",detail:"Соус: "+st.sauce+" · Добавки: "+(st.extras.length?st.extras.join(", "):"без добавок"),p:price,q:1});cartRender();toast("Сборка добавлена в корзину");closeBuilder();return}sync()}
-function prev(){let i=phases.indexOf(phase);if(i>0){phase=phases[i-1];sync()}}
-document.addEventListener("click",e=>{let a=e.target.closest("[data-add]");if(a)add(a.dataset.add);let f=e.target.closest("[data-filter]");if(f)setFilter(f.dataset.filter);let g=e.target.closest("[data-go]");if(g){document.querySelector(g.dataset.go)?.scrollIntoView({behavior:"smooth"});$$(".nav button").forEach(x=>x.classList.remove("active"));g.classList.add("active")}let act=e.target.closest("[data-act]");if(act){let i=+act.dataset.i,x=cart[i];if(act.dataset.act==="+")x.q++;if(act.dataset.act==="-"){x.q--;if(x.q<=0)cart.splice(i,1)}if(act.dataset.act==="x")cart.splice(i,1);cartRender()}let so=e.target.closest("[data-sauce]");if(so)chooseSauce(so.dataset.sauce);let ex=e.target.closest("[data-extra]");if(ex)toggleExtra(ex.dataset.extra)});
-$("#showAll").onclick=()=>{filter="";$("#menuTitle").textContent="Всё меню";$$("[data-filter]").forEach(x=>x.classList.remove("active"));render()};$("#cartBtn").onclick=openCart;$("#cartClose").onclick=closeCart;$("#cartBack").onclick=closeCart;$("#checkout").onclick=()=>toast(cart.length?"Заказ готов к оформлению":"Корзина пустая");$("#openBuilder").onclick=openBuilder;$("#heroBuilder").onclick=openBuilder;$("#navBuilder").onclick=openBuilder;$("#bclose").onclick=closeBuilder;$("#builderBack").onclick=closeBuilder;$("#left").onclick=()=>chooseType("Шаурма");$("#right").onclick=()=>chooseType("Лепёшка");$("#bnext").onclick=next;$("#bprev").onclick=prev;setFilter("shawarma");cartRender();sync();
+function cartRender(){
+  const count=cart.reduce((s,x)=>s+x.q,0);
+  $("#dot").textContent=count;$("#dot").style.display=count?"grid":"none";
+  $("#cartItems").innerHTML=cart.length?cart.map((x,i)=>`<div class="ci"><div><b>${x.n}</b><small>${x.detail||money(x.p)}</small></div><div class="qty"><button data-act="-" data-i="${i}">−</button><b>${x.q}</b><button data-act="+" data-i="${i}">+</button></div><button class="rm" data-act="x" data-i="${i}">Удалить</button></div>`).join(""):'<div class="card" style="padding:16px;color:var(--m)">Корзина пока пустая.</div>';
+  const total=cart.reduce((s,x)=>s+(typeof x.p==="number"?x.p*x.q:0),0),u=cart.some(x=>x.p===null);
+  $("#cartTotal").textContent=total+" ₽"+(u?" + без цены":"");
+}
+function openCart(){cartRender();$("#cartBack").classList.add("open");$("#cartSheet").classList.add("open");document.body.style.overflow="hidden"}
+function closeCart(){$("#cartBack").classList.remove("open");$("#cartSheet").classList.remove("open");document.body.style.overflow=""}
+
+function imgForType(){return st.type==="Лепёшка"?IMG2:IMG1}
+function resetBuilder(){st={type:null,sauce:null,extras:[]};phase="type";armedType=null;syncBuilder()}
+function openBuilder(){resetBuilder();$("#builderBack").classList.add("open");$("#builder").classList.add("open");document.body.style.overflow="hidden"}
+function closeBuilder(){$("#builderBack").classList.remove("open");$("#builder").classList.remove("open");document.body.style.overflow=""}
+
+function setScene(next){
+  const map={type:"#sceneType",sauce:"#sceneSauce",extras:"#sceneExtras",ready:"#sceneReady"};
+  $$(".bscene").forEach(x=>x.classList.remove("active"));
+  $(map[next]).classList.add("active");
+  phase=next;
+  syncBuilder();
+}
+function syncBuilder(){
+  const meta={
+    type:["Шаурма vs Лепёшка","Первый тап — выделить","Второй тап по тому же варианту подтверждает выбор. Это защищает от случайного нажатия.","Выбери формат"],
+    sauce:["Соус для "+(st.type||"сборки"),"Выбери характер вкуса","Соусы теперь отдельным полноценным экраном. Нажми на один — он появится поверх продукта.","Далее к добавкам"],
+    extras:["Добавки","Дополни сборку","Выбери любое количество. Каждая добавка визуально прилетает в кадр.","Показать итог"],
+    ready:["Сборка готова","Проверь всё","Все выбранные параметры сохранены и готовы к добавлению в корзину.","Добавить в корзину"]
+  }[phase];
+  $("#btitle").textContent=meta[0];$("#ctitle").textContent=meta[1];$("#ctext").textContent=meta[2];$("#bnext").textContent=meta[3];
+  $("#bprev").style.visibility=phase==="type"?"hidden":"visible";
+
+  $("#typeShawarma").classList.toggle("selected",armedType==="Шаурма");
+  $("#typeFlatbread").classList.toggle("selected",armedType==="Лепёшка");
+  $("#typeShawarma").classList.toggle("armed",armedType==="Шаурма");
+  $("#typeFlatbread").classList.toggle("armed",armedType==="Лепёшка");
+
+  renderSauces();renderExtras();renderSummary();
+}
+function chooseTypeTap(type){
+  if(phase!=="type")return;
+  if(armedType!==type){
+    armedType=type;
+    syncBuilder();
+    toast("Ещё один тап — подтвердить "+type.toLowerCase());
+    return;
+  }
+  st.type=type;
+  armedType=null;
+  animateConfirm(type);
+  setTimeout(()=>setScene("sauce"),420);
+}
+function animateConfirm(type){
+  const card=type==="Шаурма"?$("#typeShawarma"):$("#typeFlatbread");
+  card.animate([{transform:"scale(1.012)"},{transform:"scale(1.035)"},{transform:"scale(1.012)"}],{duration:360,easing:"cubic-bezier(.2,.8,.25,1)"});
+}
+function renderSauces(){
+  $("#sauceHeroImg").src=imgForType();
+  $("#sauceHeroTitle").textContent=st.type?st.type+" · выбери соус":"Выбери соус";
+  $("#sauceGrid").innerHTML=SA.map(s=>`<button class="sauce-tile ${st.sauce===s.name?"selected":""}" data-sauce="${s.name}" style="--tone:${s.tone}"><div class="drop"></div><b>${s.name}</b><small>${s.desc}</small></button>`).join("");
+  applySauceVisual($("#sauceHero"));
+}
+function applySauceVisual(hero){
+  hero.classList.remove("sauced");
+  if(!st.sauce)return;
+  const tone=SA.find(s=>s.name===st.sauce)?.tone||"#fff";
+  hero.style.setProperty("--tone",tone);
+  hero.querySelectorAll(".splash-line").forEach(x=>x.style.setProperty("--tone",tone));
+  void hero.offsetWidth;
+  hero.classList.add("sauced");
+}
+function chooseSauce(name){
+  st.sauce=name;
+  renderSauces();
+  toast(name+" выбран");
+}
+function renderExtras(){
+  $("#extrasHeroImg").src=imgForType();
+  $("#extrasGrid").innerHTML=EX.map(x=>`<button class="extra-tile ${st.extras.includes(x.name)?"selected":""}" data-extra="${x.name}"><span class="plusmark">${st.extras.includes(x.name)?"✓":"+"}</span><b>${x.name}</b><small>${x.desc}</small></button>`).join("");
+  const tone=SA.find(s=>s.name===st.sauce)?.tone||"#fff";
+  $("#extrasHero").style.setProperty("--tone",tone);
+  $("#extrasHero").querySelectorAll(".splash-line").forEach(x=>x.style.setProperty("--tone",tone));
+  $("#extrasHero").classList.toggle("sauced",!!st.sauce);
+  drawIngredients($("#ingredientLayer"));
+}
+function drawIngredients(host){
+  host.innerHTML="";
+  const pos=[[24,30],[72,30],[28,67],[72,66]];
+  st.extras.forEach((n,i)=>host.insertAdjacentHTML("beforeend",`<span class="extra" style="--x:${pos[i%4][0]}%;--y:${pos[i%4][1]}%">${n}</span>`));
+}
+function toggleExtra(name){
+  const i=st.extras.indexOf(name);
+  if(i>=0)st.extras.splice(i,1);else st.extras.push(name);
+  renderExtras();
+  if(st.extras.includes(name)){
+    const fly=document.createElement("span");
+    fly.className="ingredient-fly";fly.textContent=name;
+    fly.style.setProperty("--sx",(Math.random()>.5?"-120px":"120px"));
+    fly.style.setProperty("--sy","-90px");
+    $("#extrasHero").appendChild(fly);
+    setTimeout(()=>fly.remove(),900);
+  }
+}
+function renderSummary(){
+  $("#readyHeroImg").src=imgForType();
+  const tone=SA.find(s=>s.name===st.sauce)?.tone||"#fff";
+  $("#readyHero").style.setProperty("--tone",tone);
+  $("#readyHero").querySelectorAll(".splash-line").forEach(x=>x.style.setProperty("--tone",tone));
+  $("#readyHero").classList.toggle("sauced",!!st.sauce);
+  drawIngredients($("#readyIngredientLayer"));
+  const price=st.type==="Лепёшка"?320:330;
+  $("#sumName").textContent=(st.type||"Сборка")+" · твой вариант";
+  $("#sumType").textContent=st.type||"—";
+  $("#sumSauce").textContent=st.sauce||"—";
+  $("#sumExtras").textContent=st.extras.length?st.extras.join(", "):"Без добавок";
+  $("#sumPrice").textContent=price+" ₽";
+  $("#chips").innerHTML=[st.type&&"Формат: "+st.type,st.sauce&&"Соус: "+st.sauce,...st.extras].filter(Boolean).map(x=>'<span class="chip2">'+x+"</span>").join("");
+}
+function nextBuilder(){
+  if(phase==="type"){toast("Подтверди формат двойным нажатием");return;}
+  if(phase==="sauce"){if(!st.sauce){toast("Сначала выбери соус");return}setScene("extras");return}
+  if(phase==="extras"){setScene("ready");return}
+  if(phase==="ready"){
+    const price=st.type==="Лепёшка"?320:330;
+    cart.push({id:"custom"+Date.now(),builder:true,n:st.type+" · своя сборка",detail:"Соус: "+st.sauce+" · Добавки: "+(st.extras.length?st.extras.join(", "):"без добавок"),p:price,q:1});
+    cartRender();toast("Сборка добавлена в корзину");closeBuilder();
+  }
+}
+function prevBuilder(){
+  if(phase==="sauce"){setScene("type");armedType=st.type;syncBuilder();return}
+  if(phase==="extras"){setScene("sauce");return}
+  if(phase==="ready"){setScene("extras");return}
+}
+
+document.addEventListener("click",e=>{
+  const a=e.target.closest("[data-add]");if(a)add(a.dataset.add);
+  const f=e.target.closest("[data-filter]");if(f)setFilter(f.dataset.filter);
+  const g=e.target.closest("[data-go]");if(g){document.querySelector(g.dataset.go)?.scrollIntoView({behavior:"smooth"});$$(".nav button").forEach(x=>x.classList.remove("active"));g.classList.add("active")}
+  const act=e.target.closest("[data-act]");if(act){let i=+act.dataset.i,x=cart[i];if(act.dataset.act==="+")x.q++;if(act.dataset.act==="-"){x.q--;if(x.q<=0)cart.splice(i,1)}if(act.dataset.act==="x")cart.splice(i,1);cartRender()}
+  const so=e.target.closest("[data-sauce]");if(so)chooseSauce(so.dataset.sauce);
+  const ex=e.target.closest("[data-extra]");if(ex)toggleExtra(ex.dataset.extra);
+});
+$("#typeShawarma").onclick=()=>chooseTypeTap("Шаурма");
+$("#typeFlatbread").onclick=()=>chooseTypeTap("Лепёшка");
+$("#showAll").onclick=()=>{filter="";$("#menuTitle").textContent="Всё меню";$$("[data-filter]").forEach(x=>x.classList.remove("active"));render()};
+$("#cartBtn").onclick=openCart;$("#cartClose").onclick=closeCart;$("#cartBack").onclick=closeCart;
+$("#checkout").onclick=()=>toast(cart.length?"Заказ готов к оформлению":"Корзина пустая");
+$("#openBuilder").onclick=openBuilder;$("#heroBuilder").onclick=openBuilder;$("#navBuilder").onclick=openBuilder;
+$("#bclose").onclick=closeBuilder;$("#builderBack").onclick=closeBuilder;
+$("#bnext").onclick=nextBuilder;$("#bprev").onclick=prevBuilder;
+
+setFilter("shawarma");cartRender();syncBuilder();
 </script>
 </body></html>
