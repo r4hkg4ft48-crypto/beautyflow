@@ -5,6 +5,13 @@ const {Pool}=require('pg');
 
 const app=express();
 app.use(express.json());
+app.use((req,res,next)=>{
+ res.setHeader('Access-Control-Allow-Origin','*');
+ res.setHeader('Access-Control-Allow-Headers','Content-Type, X-Owner-Token');
+ res.setHeader('Access-Control-Allow-Methods','GET,POST,PATCH,OPTIONS');
+ if(req.method==='OPTIONS') return res.sendStatus(204);
+ next();
+});
 app.use(express.static(__dirname));
 
 const PORT=process.env.PORT||3000;
@@ -51,6 +58,19 @@ async function initDb(){
  CREATE TABLE IF NOT EXISTS services(id SERIAL PRIMARY KEY,salon_id INT REFERENCES salons(id) ON DELETE CASCADE,name TEXT NOT NULL,category TEXT NOT NULL,price INT NOT NULL,duration INT NOT NULL,emoji TEXT);
  CREATE TABLE IF NOT EXISTS masters(id SERIAL PRIMARY KEY,salon_id INT REFERENCES salons(id) ON DELETE CASCADE,name TEXT NOT NULL,specialty TEXT NOT NULL,experience INT DEFAULT 0,rating NUMERIC(2,1) DEFAULT 5.0);
  CREATE TABLE IF NOT EXISTS bookings(id BIGSERIAL PRIMARY KEY,salon_id INT,service_name TEXT NOT NULL,master_name TEXT,booking_date TEXT NOT NULL,booking_time TEXT NOT NULL,client_name TEXT DEFAULT 'Гость',client_phone TEXT,status TEXT DEFAULT 'confirmed',created_at TIMESTAMPTZ DEFAULT NOW());
+ CREATE TABLE IF NOT EXISTS shaurma_orders(
+   id BIGSERIAL PRIMARY KEY,
+   order_number TEXT UNIQUE NOT NULL,
+   items JSONB NOT NULL DEFAULT '[]'::jsonb,
+   total INT NOT NULL DEFAULT 0,
+   customer_name TEXT DEFAULT 'Гость',
+   phone TEXT,
+   address TEXT,
+   comment TEXT,
+   status TEXT NOT NULL DEFAULT 'new',
+   created_at TIMESTAMPTZ DEFAULT NOW(),
+   updated_at TIMESTAMPTZ DEFAULT NOW()
+ );
  `);
  const c=await DB.query('SELECT COUNT(*)::int c FROM salons');
  if(c.rows[0].c===0){
@@ -124,6 +144,97 @@ app.get('/api/admin/stats',async(req,res)=>{
   res.json({bookings:bookings.length,active:active.length,cancelled:bookings.length-active.length,revenue:active.length*3200,salons:DB?(await DB.query('SELECT COUNT(*)::int c FROM salons')).rows[0].c:readStore().salons.length});
  }catch(e){res.status(500).json({error:e.message})}
 });
+
+
+const ownerClients=new Set();
+function ownerOk(req){return !!process.env.OWNER_API_TOKEN && (req.get('x-owner-token')===process.env.OWNER_API_TOKEN || req.query.token===process.env.OWNER_API_TOKEN)}
+function pushOwner(event,payload){
+ const data='event: '+event+'\n'+'data: '+JSON.stringify(payload)+'\n\n';
+ for(const res of ownerClients){try{res.write(data)}catch{ownerClients.delete(res)}}
+}
+function orderNumber(){return 'SC-'+Date.now().toString().slice(-7)+'-'+Math.floor(10+Math.random()*90)}
+
+app.post('/api/shaurma/login',(req,res)=>{
+ if(!process.env.OWNER_PASSWORD||!process.env.OWNER_API_TOKEN)return res.status(503).json({error:'owner_not_configured'});
+ if((req.body||{}).password!==process.env.OWNER_PASSWORD)return res.status(401).json({error:'invalid_password'});
+ res.json({ok:true,token:process.env.OWNER_API_TOKEN});
+});
+
+app.get('/api/shaurma/stream',(req,res)=>{
+ if(!ownerOk(req))return res.sendStatus(401);
+ res.setHeader('Content-Type','text/event-stream');
+ res.setHeader('Cache-Control','no-cache');
+ res.setHeader('Connection','keep-alive');
+ res.flushHeaders?.();
+ res.write('event: ready\ndata: {"ok":true}\n\n');
+ ownerClients.add(res);
+ const keep=setInterval(()=>{try{res.write(': ping\n\n')}catch{}},20000);
+ req.on('close',()=>{clearInterval(keep);ownerClients.delete(res)});
+});
+
+app.post('/api/shaurma/orders',async(req,res)=>{
+ const {items,total,customer_name,phone,address,comment}=req.body||{};
+ if(!Array.isArray(items)||!items.length)return res.status(400).json({error:'empty_order'});
+ if(!phone)return res.status(400).json({error:'phone_required'});
+ const num=orderNumber();
+ try{
+  let order;
+  if(DB){
+   const q=await DB.query(
+    'INSERT INTO shaurma_orders(order_number,items,total,customer_name,phone,address,comment) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *',
+    [num,JSON.stringify(items),Number(total)||0,customer_name||'Гость',phone,address||'',comment||'']
+   );
+   order=q.rows[0];
+  }else{
+   const d=readStore();d.shaurma_orders=d.shaurma_orders||[];
+   order={id:Date.now(),order_number:num,items,total:Number(total)||0,customer_name:customer_name||'Гость',phone,address:address||'',comment:comment||'',status:'new',created_at:new Date().toISOString(),updated_at:new Date().toISOString()};
+   d.shaurma_orders.push(order);writeStore(d);
+  }
+  pushOwner('order',order);
+  res.status(201).json(order);
+ }catch(e){res.status(500).json({error:e.message})}
+});
+
+app.get('/api/shaurma/orders',async(req,res)=>{
+ if(!ownerOk(req))return res.sendStatus(401);
+ try{
+  const rows=DB?(await DB.query('SELECT * FROM shaurma_orders ORDER BY created_at DESC LIMIT 200')).rows:(readStore().shaurma_orders||[]).slice().reverse();
+  res.json(rows);
+ }catch(e){res.status(500).json({error:e.message})}
+});
+
+app.patch('/api/shaurma/orders/:id',async(req,res)=>{
+ if(!ownerOk(req))return res.sendStatus(401);
+ const allowed=['new','cooking','ready','done','cancelled'];
+ const status=(req.body||{}).status;
+ if(!allowed.includes(status))return res.status(400).json({error:'bad_status'});
+ try{
+  let order;
+  if(DB){
+   const q=await DB.query('UPDATE shaurma_orders SET status=$1,updated_at=NOW() WHERE id=$2 RETURNING *',[status,req.params.id]);
+   order=q.rows[0]; if(!order)return res.sendStatus(404);
+  }else{
+   const d=readStore(),arr=d.shaurma_orders||[],x=arr.find(v=>String(v.id)===String(req.params.id));if(!x)return res.sendStatus(404);x.status=status;x.updated_at=new Date().toISOString();writeStore(d);order=x;
+  }
+  pushOwner('update',order);res.json(order);
+ }catch(e){res.status(500).json({error:e.message})}
+});
+
+app.get('/api/shaurma/stats',async(req,res)=>{
+ if(!ownerOk(req))return res.sendStatus(401);
+ try{
+  const rows=DB?(await DB.query('SELECT * FROM shaurma_orders WHERE created_at >= NOW()-INTERVAL \'1 day\'')).rows:(readStore().shaurma_orders||[]).filter(x=>Date.now()-new Date(x.created_at).getTime()<86400000);
+  res.json({
+   today:rows.length,
+   new:rows.filter(x=>x.status==='new').length,
+   cooking:rows.filter(x=>x.status==='cooking').length,
+   ready:rows.filter(x=>x.status==='ready').length,
+   revenue:rows.filter(x=>x.status!=='cancelled').reduce((a,x)=>a+(Number(x.total)||0),0)
+  });
+ }catch(e){res.status(500).json({error:e.message})}
+});
+
+app.get('/shaurma-owner',(req,res)=>res.sendFile(path.join(__dirname,'shaurma-owner.html')));
 
 app.get('/admin',(req,res)=>res.sendFile(path.join(__dirname,'admin.html')));
 app.use((req,res)=>res.sendFile(path.join(__dirname,'index.html')));
