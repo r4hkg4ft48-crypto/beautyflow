@@ -2,6 +2,7 @@ const express=require('express');
 const path=require('path');
 const fs=require('fs');
 const {Pool}=require('pg');
+const crypto=require('crypto');
 
 const app=express();
 app.use(express.json());
@@ -78,6 +79,8 @@ async function initDb(){
     status TEXT NOT NULL DEFAULT 'new',
     source TEXT NOT NULL DEFAULT 'web',
     telegram_user_id TEXT,
+    telegram_username TEXT,
+    telegram_first_name TEXT,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
   );
@@ -87,6 +90,11 @@ async function initDb(){
   CREATE INDEX IF NOT EXISTS idx_shaurma_orders_status
     ON shaurma_orders(status);
  `);
+ await DB.query("ALTER TABLE shaurma_orders ADD COLUMN IF NOT EXISTS telegram_username TEXT");
+ await DB.query("ALTER TABLE shaurma_orders ADD COLUMN IF NOT EXISTS telegram_first_name TEXT");
+ await DB.query("ALTER TABLE shaurma_orders ADD COLUMN IF NOT EXISTS source TEXT NOT NULL DEFAULT 'web'");
+ await DB.query("ALTER TABLE shaurma_orders ADD COLUMN IF NOT EXISTS telegram_user_id TEXT");
+
 }
 
 app.get('/api/health',(req,res)=>res.json({ok:true,mode:'shaurma-city',storage:DB?'postgres':'temporary'}));
@@ -99,6 +107,41 @@ app.get('/api/health',(req,res)=>res.json({ok:true,mode:'shaurma-city',storage:D
 
 
 const ownerClients=new Set();
+const telegramClients=new Map();
+const telegramSessions=new Map();
+
+function verifyTelegramInitData(initData){
+ if(!process.env.TELEGRAM_BOT_TOKEN) throw new Error('telegram_not_configured');
+ const p=new URLSearchParams(initData||'');
+ const hash=p.get('hash'); if(!hash) throw new Error('bad_init_data');
+ p.delete('hash');
+ const authDate=Number(p.get('auth_date')||0);
+ if(!authDate || Math.abs(Date.now()/1000-authDate)>86400) throw new Error('expired_init_data');
+ const dataCheck=[...p.entries()].sort(([a],[b])=>a.localeCompare(b)).map(([k,v])=>k+'='+v).join('\n');
+ const secret=crypto.createHmac('sha256','WebAppData').update(process.env.TELEGRAM_BOT_TOKEN).digest();
+ const calc=crypto.createHmac('sha256',secret).update(dataCheck).digest('hex');
+ if(calc.length!==hash.length || !crypto.timingSafeEqual(Buffer.from(calc),Buffer.from(hash))) throw new Error('bad_hash');
+ let user={}; try{user=JSON.parse(p.get('user')||'{}')}catch{}
+ if(!user.id) throw new Error('no_user');
+ return user;
+}
+function newTelegramSession(user){
+ const token=crypto.randomBytes(32).toString('hex');
+ telegramSessions.set(token,{user,exp:Date.now()+12*60*60*1000});
+ return token;
+}
+function telegramSession(req){
+ const auth=req.get('authorization')||'';
+ const token=auth.startsWith('Bearer ')?auth.slice(7):(req.query.session||'');
+ const s=telegramSessions.get(token);
+ if(!s||s.exp<Date.now()){if(token)telegramSessions.delete(token);return null}
+ return s;
+}
+function pushTelegram(userId,event,payload){
+ const set=telegramClients.get(String(userId)); if(!set)return;
+ const data='event: '+event+'\n'+'data: '+JSON.stringify(payload)+'\n\n';
+ for(const res of set){try{res.write(data)}catch{set.delete(res)}}
+}
 function ownerOk(req){return !!process.env.OWNER_API_TOKEN && (req.get('x-owner-token')===process.env.OWNER_API_TOKEN || req.query.token===process.env.OWNER_API_TOKEN)}
 function pushOwner(event,payload){
  const data='event: '+event+'\n'+'data: '+JSON.stringify(payload)+'\n\n';
@@ -124,8 +167,45 @@ app.get('/api/shaurma/stream',(req,res)=>{
  req.on('close',()=>{clearInterval(keep);ownerClients.delete(res)});
 });
 
+
+app.post('/api/shaurma/telegram-auth',(req,res)=>{
+ try{
+  const user=verifyTelegramInitData((req.body||{}).initData||'');
+  const session=newTelegramSession(user);
+  res.json({ok:true,session,user:{id:String(user.id),username:user.username||'',first_name:user.first_name||'',last_name:user.last_name||''}});
+ }catch(e){
+  if(e.message==='telegram_not_configured') return res.status(503).json({error:e.message});
+  res.status(401).json({error:e.message||'telegram_auth_failed'});
+ }
+});
+
+app.get('/api/shaurma/my-orders',async(req,res)=>{
+ const sess=telegramSession(req); if(!sess)return res.sendStatus(401);
+ try{
+  const uid=String(sess.user.id);
+  const rows=DB?(await DB.query('SELECT * FROM shaurma_orders WHERE telegram_user_id=$1 ORDER BY created_at DESC LIMIT 100',[uid])).rows:(readStore().shaurma_orders||[]).filter(x=>String(x.telegram_user_id)===uid).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+  res.json(rows);
+ }catch(e){res.status(500).json({error:e.message})}
+});
+
+app.get('/api/shaurma/my-stream',(req,res)=>{
+ const sess=telegramSession(req); if(!sess)return res.sendStatus(401);
+ const uid=String(sess.user.id);
+ res.setHeader('Content-Type','text/event-stream');
+ res.setHeader('Cache-Control','no-cache');
+ res.setHeader('Connection','keep-alive');
+ res.flushHeaders?.();
+ res.write('event: ready\ndata: {"ok":true}\n\n');
+ if(!telegramClients.has(uid)) telegramClients.set(uid,new Set());
+ const set=telegramClients.get(uid); set.add(res);
+ const keep=setInterval(()=>{try{res.write(': ping\n\n')}catch{}},20000);
+ req.on('close',()=>{clearInterval(keep);set.delete(res);if(!set.size)telegramClients.delete(uid)});
+});
+
 app.post('/api/shaurma/orders',async(req,res)=>{
  const {items,total,customer_name,phone,address,comment}=req.body||{};
+ const sess=telegramSession(req);
+ const tgUser=sess?sess.user:null;
  if(!Array.isArray(items)||!items.length)return res.status(400).json({error:'empty_order'});
  if(!phone)return res.status(400).json({error:'phone_required'});
  const num=orderNumber();
@@ -133,16 +213,17 @@ app.post('/api/shaurma/orders',async(req,res)=>{
   let order;
   if(DB){
    const q=await DB.query(
-    'INSERT INTO shaurma_orders(order_number,items,total,customer_name,phone,address,comment) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *',
-    [num,JSON.stringify(items),Number(total)||0,customer_name||'Гость',phone,address||'',comment||'']
+    'INSERT INTO shaurma_orders(order_number,items,total,customer_name,phone,address,comment,source,telegram_user_id,telegram_username,telegram_first_name) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *',
+    [num,JSON.stringify(items),Number(total)||0,customer_name||(tgUser?.first_name||'Гость'),phone,address||'',comment||'',tgUser?'telegram':'web',tgUser?String(tgUser.id):null,tgUser?.username||null,tgUser?.first_name||null]
    );
    order=q.rows[0];
   }else{
    const d=readStore();d.shaurma_orders=d.shaurma_orders||[];
-   order={id:Date.now(),order_number:num,items,total:Number(total)||0,customer_name:customer_name||'Гость',phone,address:address||'',comment:comment||'',status:'new',created_at:new Date().toISOString(),updated_at:new Date().toISOString()};
+   order={id:Date.now(),order_number:num,items,total:Number(total)||0,customer_name:customer_name||(tgUser?.first_name||'Гость'),phone,address:address||'',comment:comment||'',status:'new',source:tgUser?'telegram':'web',telegram_user_id:tgUser?String(tgUser.id):null,telegram_username:tgUser?.username||null,telegram_first_name:tgUser?.first_name||null,created_at:new Date().toISOString(),updated_at:new Date().toISOString()};
    d.shaurma_orders.push(order);writeStore(d);
   }
   pushOwner('order',order);
+  if(order.telegram_user_id) pushTelegram(order.telegram_user_id,'order',order);
   res.status(201).json(order);
  }catch(e){res.status(500).json({error:e.message})}
 });
@@ -168,7 +249,7 @@ app.patch('/api/shaurma/orders/:id',async(req,res)=>{
   }else{
    const d=readStore(),arr=d.shaurma_orders||[],x=arr.find(v=>String(v.id)===String(req.params.id));if(!x)return res.sendStatus(404);x.status=status;x.updated_at=new Date().toISOString();writeStore(d);order=x;
   }
-  pushOwner('update',order);res.json(order);
+  pushOwner('update',order);if(order.telegram_user_id)pushTelegram(order.telegram_user_id,'update',order);res.json(order);
  }catch(e){res.status(500).json({error:e.message})}
 });
 
