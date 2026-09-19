@@ -72,5 +72,5 @@ app.get('/api/admin/stats',async(req,res)=>{
  }catch(e){res.status(500).json({error:e.message})}
 });
 app.get('/admin',(req,res)=>res.sendFile(path.join(__dirname,'admin.html')));
-app.get('*',(req,res)=>res.sendFile(path.join(__dirname,'index.html')));
+app.use((req,res)=>res.sendFile(path.join(__dirname,'index.html')));
 initDb().catch(e=>console.error('DB init:',e.message)).finally(()=>app.listen(PORT,()=>console.log('BeautyFlow on '+PORT)));
