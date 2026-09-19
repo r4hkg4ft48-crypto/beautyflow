@@ -110,21 +110,22 @@ const ownerClients=new Set();
 const telegramClients=new Map();
 const telegramSessions=new Map();
 
-function verifyTelegramInitData(initData){
- if(!process.env.TELEGRAM_BOT_TOKEN) throw new Error('telegram_not_configured');
+function verifyTelegramInitDataWithToken(initData,botToken){
+ if(!botToken) throw new Error('telegram_not_configured');
  const p=new URLSearchParams(initData||'');
  const hash=p.get('hash'); if(!hash) throw new Error('bad_init_data');
  p.delete('hash');
  const authDate=Number(p.get('auth_date')||0);
  if(!authDate || Math.abs(Date.now()/1000-authDate)>86400) throw new Error('expired_init_data');
  const dataCheck=[...p.entries()].sort(([a],[b])=>a.localeCompare(b)).map(([k,v])=>k+'='+v).join('\n');
- const secret=crypto.createHmac('sha256','WebAppData').update(process.env.TELEGRAM_BOT_TOKEN).digest();
+ const secret=crypto.createHmac('sha256','WebAppData').update(botToken).digest();
  const calc=crypto.createHmac('sha256',secret).update(dataCheck).digest('hex');
  if(calc.length!==hash.length || !crypto.timingSafeEqual(Buffer.from(calc),Buffer.from(hash))) throw new Error('bad_hash');
  let user={}; try{user=JSON.parse(p.get('user')||'{}')}catch{}
  if(!user.id) throw new Error('no_user');
  return user;
 }
+function verifyTelegramInitData(initData){return verifyTelegramInitDataWithToken(initData,process.env.CLIENT_TELEGRAM_BOT_TOKEN||process.env.TELEGRAM_BOT_TOKEN)}
 function newTelegramSession(user){
  const token=crypto.randomBytes(32).toString('hex');
  telegramSessions.set(token,{user,exp:Date.now()+12*60*60*1000});
