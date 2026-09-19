@@ -147,16 +147,13 @@ modal.onclick=e=>{if(e.target===modal)modal.style.display='none'};
 document.querySelectorAll('.date').forEach(x=>x.onclick=()=>{document.querySelectorAll('.date').forEach(y=>y.classList.remove('active'));x.classList.add('active')});
 document.querySelectorAll('.time').forEach(x=>x.onclick=()=>{document.querySelectorAll('.time').forEach(y=>y.classList.remove('active'));x.classList.add('active')});
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1900)}
-document.getElementById('confirm').onclick=()=>{
- const d=document.querySelector('.date.active').innerText.replace('\n',' '),tm=document.querySelector('.time.active').innerText;
- const list=JSON.parse(localStorage.getItem('beautyflowBookings')||'[]');list.unshift({id:Date.now(),service:currentService,date:d,time:tm});localStorage.setItem('beautyflowBookings',JSON.stringify(list));
- modal.style.display='none';toast('Запись сохранена ✓');renderAppointments();
+document.getElementById('confirm').onclick=async()=>{
+ const d=document.querySelector('.date.active').innerText.replace('\\n',' '),tm=document.querySelector('.time.active').innerText;
+ try{await fetch('/api/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({service_name:currentService,booking_date:d,booking_time:tm,client_name:'Гость BeautyFlow'})});modal.style.display='none';toast('Запись сохранена ✓');renderAppointments();}catch{toast('Ошибка сохранения')}
 };
-function renderAppointments(){const el=document.getElementById('appointmentsList');const list=JSON.parse(localStorage.getItem('beautyflowBookings')||'[]');if(!list.length){el.innerHTML='<div class="empty">Пока нет записей. Выберите услугу на главной или в каталоге.</div>';return}
- el.innerHTML=list.map(x=>'<div class="appointment"><div class="topline"><h3>'+x.service+'</h3><span class="status">Подтверждено</span></div><p>'+x.date+' · '+x.time+'</p><div class="actions"><button onclick="moveBooking('+x.id+')">Перенести</button><button onclick="cancelBooking('+x.id+')">Отменить</button></div></div>').join('');
-}
-window.cancelBooking=id=>{let a=JSON.parse(localStorage.getItem('beautyflowBookings')||'[]').filter(x=>x.id!==id);localStorage.setItem('beautyflowBookings',JSON.stringify(a));renderAppointments();toast('Запись отменена')};
-window.moveBooking=id=>{const a=JSON.parse(localStorage.getItem('beautyflowBookings')||'[]'),x=a.find(v=>v.id===id);if(x)openBooking(x.service)};
+async function renderAppointments(){const el=document.getElementById('appointmentsList');try{const list=await fetch('/api/bookings').then(r=>r.json());if(!list.length){el.innerHTML='<div class="empty">Пока нет записей. Выберите услугу на главной или в каталоге.</div>';return}el.innerHTML=list.map(x=>'<div class="appointment"><div class="topline"><h3>'+x.service_name+'</h3><span class="status">'+(x.status==='cancelled'?'Отменено':'Подтверждено')+'</span></div><p>'+x.booking_date+' · '+x.booking_time+'</p><div class="actions"><button onclick="moveBooking('+x.id+',\''+x.service_name.replace(/'/g,"\\'")+'\')">Перенести</button><button onclick="cancelBooking('+x.id+')">Отменить</button></div></div>').join('')}catch{el.innerHTML='<div class="empty">Не удалось загрузить записи</div>'}}
+window.cancelBooking=async id=>{await fetch('/api/bookings/'+id,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({status:'cancelled'})});renderAppointments();toast('Запись отменена')};
+window.moveBooking=(id,name)=>openBooking(name||'Перенос записи');
 document.getElementById('serviceSearch').oninput=e=>{const q=e.target.value.toLowerCase();document.querySelectorAll('#serviceList [data-name]').forEach(x=>x.style.display=x.dataset.name.toLowerCase().includes(q)?'flex':'none')};
 document.querySelectorAll('.filter').forEach(b=>b.onclick=()=>{document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');const q=b.textContent.toLowerCase();document.querySelectorAll('#serviceList [data-name]').forEach(x=>x.style.display=(q==='все'||x.dataset.name.toLowerCase().includes(q))?'flex':'none')});
 document.getElementById('goAI').onclick=()=>document.getElementById('aiBlock').scrollIntoView({behavior:'smooth',block:'center'});
